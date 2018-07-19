@@ -24,6 +24,42 @@ function get_weapon_states() {
         ptr,
     }
 }
+function get_collision_table() {
+    const ptr = Module.ccall('get_collision_table', 'number');
+
+    const max_count           = Module.HEAP32[(ptr+4*0)>>2];
+    const ptr_used            = Module.HEAP32[(ptr+4*1)>>2];
+    const curr_max            = Module.HEAP32[(ptr+4*2)>>2];
+    const ptr_entity_id       = Module.HEAP32[(ptr+4*3)>>2];
+    const ptr_entity_id_2     = Module.HEAP32[(ptr+4*4)>>2];
+
+    return {
+        max_count,
+        used:            new Uint8Array(Module.HEAPU8.buffer,    ptr_used,        max_count),
+        curr_max,
+        entity_id:       new Uint32Array(Module.HEAPU32.buffer,  ptr_entity_id,   max_count),
+        entity_id_2:     new Uint32Array(Module.HEAPU32.buffer,  ptr_entity_id_2, max_count),
+        ptr,
+    };
+}
+function get_hit_feedback_table() {
+    const ptr = Module.ccall('get_hit_feedback_table', 'number');
+
+    const max_count           = Module.HEAP32[(ptr+4*0)>>2];
+    const ptr_used            = Module.HEAP32[(ptr+4*1)>>2];
+    const curr_max            = Module.HEAP32[(ptr+4*2)>>2];
+    const ptr_entity_id       = Module.HEAP32[(ptr+4*3)>>2];
+    const ptr_amount          = Module.HEAP32[(ptr+4*4)>>2];
+
+    return {
+        max_count,
+        used:      new Uint8Array(Module.HEAPU8.buffer,    ptr_used,      max_count),
+        curr_max,
+        entity_id: new Uint32Array(Module.HEAPU32.buffer,  ptr_entity_id, max_count),
+        amount:    new Float32Array(Module.HEAPF32.buffer, ptr_amount,    max_count),
+        ptr,
+    };
+}
 function get_sprite_map() {
     const ptr = Module.ccall('get_sprite_map', 'number');
 
@@ -117,6 +153,7 @@ async function main() {
     }
 
     function render() {
+        const hit_feedback_table = get_hit_feedback_table();
         const weapon_states = get_weapon_states();
         const sprite_map = get_sprite_map();
         const physics_states = get_physics_states();
@@ -133,23 +170,40 @@ async function main() {
                 const sprite_size = sprite_map.sprite_size[i];
                 const sprite = sprites[sprite_id];
                 let scale = sprite_size / sprite.width;
+                if (scale > 100) {
+                    scale = 1;
+                }
                 const physics_id = find_item_index(physics_states, entity_id);
                 const x = physics_states.x[physics_id];
                 const y = physics_states.y[physics_id];
                 const angle = physics_states.angle[physics_id];
-                if (scale > 100) {
-                    scale = 1;
-                }
                 
+                ctx.save();
+
                 ctx.translate(x, y);
                 ctx.rotate(angle);
                 ctx.translate(sprite_origin_x, sprite_origin_y);
                 ctx.scale(scale, scale);
+
                 ctx.drawImage(sprite, 0, 0);
-                ctx.scale(1/scale, 1/scale);
-                ctx.translate(-sprite_origin_x, -sprite_origin_y);
-                ctx.rotate(-angle);
-                ctx.translate(-x, -y);
+
+                ctx.restore();
+                ctx.save();
+
+                const hit_feedback_id = find_item_index(hit_feedback_table, entity_id);
+                const hit_feedback_amount = hit_feedback_table.amount[hit_feedback_id];
+                
+                if (hit_feedback_id < hit_feedback_table.curr_max &&
+                    hit_feedback_amount > 0) {
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, sprite_size * scale * 2.4, 0, Math.PI*2);
+                    ctx.fillStyle = '#f00';
+                    ctx.globalAlpha = hit_feedback_amount / 100;
+                    ctx.fill();
+                }
+
+                ctx.restore();
             }
         }
 
