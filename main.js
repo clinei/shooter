@@ -125,30 +125,32 @@ async function main() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < sprite_map.curr_max; i += 1) {
-            const entity_id = sprite_map.entity_id[i];
-            const sprite_id = sprite_map.sprite_id[i];
-            const sprite_origin_x = sprite_map.sprite_origin_x[i];
-            const sprite_origin_y = sprite_map.sprite_origin_y[i];
-            const sprite_size = sprite_map.sprite_size[i];
-            const sprite = sprites[sprite_id];
-            let scale = sprite_size / sprite.width;
-            const physics_id = find_item_index(physics_states, entity_id);
-            const x = physics_states.x[physics_id];
-            const y = physics_states.y[physics_id];
-            const angle = physics_states.angle[physics_id];
-            if (scale > 100) {
-                scale = 1;
+            if (sprite_map.used[i]) {
+                const entity_id = sprite_map.entity_id[i];
+                const sprite_id = sprite_map.sprite_id[i];
+                const sprite_origin_x = sprite_map.sprite_origin_x[i];
+                const sprite_origin_y = sprite_map.sprite_origin_y[i];
+                const sprite_size = sprite_map.sprite_size[i];
+                const sprite = sprites[sprite_id];
+                let scale = sprite_size / sprite.width;
+                const physics_id = find_item_index(physics_states, entity_id);
+                const x = physics_states.x[physics_id];
+                const y = physics_states.y[physics_id];
+                const angle = physics_states.angle[physics_id];
+                if (scale > 100) {
+                    scale = 1;
+                }
+                
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.translate(sprite_origin_x, sprite_origin_y);
+                ctx.scale(scale, scale);
+                ctx.drawImage(sprite, 0, 0);
+                ctx.scale(1/scale, 1/scale);
+                ctx.translate(-sprite_origin_x, -sprite_origin_y);
+                ctx.rotate(-angle);
+                ctx.translate(-x, -y);
             }
-            
-            ctx.translate(x, y);
-            ctx.rotate(angle);
-            ctx.translate(sprite_origin_x, sprite_origin_y);
-            ctx.scale(scale, scale);
-            ctx.drawImage(sprite, 0, 0);
-            ctx.scale(1/scale, 1/scale);
-            ctx.translate(-sprite_origin_x, -sprite_origin_y);
-            ctx.rotate(-angle);
-            ctx.translate(-x, -y);
         }
 
         /*
