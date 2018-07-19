@@ -93,8 +93,8 @@ function get_physics_states() {
     const ptr_entity_id = Module.HEAP32[(ptr+4*3)>>2];
     const ptr_x         = Module.HEAP32[(ptr+4*4)>>2];
     const ptr_y         = Module.HEAP32[(ptr+4*5)>>2];
-    const ptr_x_accel   = Module.HEAP32[(ptr+4*6)>>2];
-    const ptr_y_accel   = Module.HEAP32[(ptr+4*7)>>2];
+    const ptr_x_speed   = Module.HEAP32[(ptr+4*6)>>2];
+    const ptr_y_speed   = Module.HEAP32[(ptr+4*7)>>2];
     const ptr_angle     = Module.HEAP32[(ptr+4*8)>>2];
 
     return {
@@ -104,8 +104,8 @@ function get_physics_states() {
         entity_id: new Uint32Array(Module.HEAPF32.buffer,  ptr_entity_id, max_count),
         x:         new Float32Array(Module.HEAPF32.buffer, ptr_x,         max_count),
         y:         new Float32Array(Module.HEAPF32.buffer, ptr_y,         max_count),
-        x_accel:   new Float32Array(Module.HEAPF32.buffer, ptr_x_accel,   max_count),
-        y_accel:   new Float32Array(Module.HEAPF32.buffer, ptr_y_accel,   max_count),
+        x_speed:   new Float32Array(Module.HEAPF32.buffer, ptr_x_speed,   max_count),
+        y_speed:   new Float32Array(Module.HEAPF32.buffer, ptr_y_speed,   max_count),
         angle:     new Float32Array(Module.HEAPF32.buffer, ptr_angle,     max_count),
         ptr,
     };

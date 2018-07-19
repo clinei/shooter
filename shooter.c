@@ -17,9 +17,14 @@
 
 /*  TASKS
 
-* convert delta to ms
-
 * health and player and zombie death
+
+* make zombies keep a certain distance from each other
+  to avoid weird behavior when knocked back
+
+* make a separate game clock
+  and make everything run in a web worker
+  so we can pause and continue
 
 * ammo pickups
 
@@ -235,8 +240,8 @@ struct Physics_States {
     table_id_t* entity_id;
     float* x;
     float* y;
-    float* x_accel;
-    float* y_accel;
+    float* x_speed;
+    float* y_speed;
     float* angle;
 };
 struct Physics_States* physics_states;
@@ -245,20 +250,20 @@ void alloc_physics_states(size_t max_count) {
     alloc_table(physics_states, max_count);
     physics_states->x = malloc(max_count * sizeof(float));
     physics_states->y = malloc(max_count * sizeof(float));
-    physics_states->x_accel = malloc(max_count * sizeof(float));
-    physics_states->y_accel = malloc(max_count * sizeof(float));
+    physics_states->x_speed = malloc(max_count * sizeof(float));
+    physics_states->y_speed = malloc(max_count * sizeof(float));
     physics_states->angle = malloc(max_count * sizeof(float));
 }
 table_id_t add_physics_state(table_id_t entity_id,
                              float x,       float y,
-                             float x_accel, float y_accel) {
+                             float x_speed, float y_speed) {
 
     table_id_t index = add_table_item(physics_states, entity_id);
     if (index < physics_states->max_count) {
         physics_states->x[index] = x;
         physics_states->y[index] = y;
-        physics_states->x_accel[index] = x_accel;
-        physics_states->y_accel[index] = y_accel;
+        physics_states->x_speed[index] = x_speed;
+        physics_states->y_speed[index] = y_speed;
     }
     return index;
 }
@@ -552,9 +557,9 @@ table_id_t create_player(float x, float y) {
     return entity_id;
 }
 
-table_id_t create_bullet(float x, float y, float x_accel, float y_accel) {
+table_id_t create_bullet(float x, float y, float x_speed, float y_speed) {
     const table_id_t entity_id = create_entity();
-    add_physics_state(entity_id, x, y, x_accel, y_accel);
+    add_physics_state(entity_id, x, y, x_speed, y_speed);
     add_physics_ball(entity_id, 4, 1);
     add_sprite_map(entity_id, SPRITE_BULLET, -8, -8, 16);
     add_bullet(entity_id, BULLET_DAMAGE, curr_time);
@@ -747,26 +752,26 @@ void step_player(float delta) {
 
     // movement
     if (input_state->move_up) {
-        physics_states->y_accel[0] = -PLAYER_SPEED;
+        physics_states->y_speed[0] = -PLAYER_SPEED;
     }
     else if (input_state->move_down) {
-        physics_states->y_accel[0] = PLAYER_SPEED;
+        physics_states->y_speed[0] = PLAYER_SPEED;
     }
     else {
-        physics_states->y_accel[0] = 0;
+        physics_states->y_speed[0] = 0;
     }
     if (input_state->move_left) {
-        physics_states->x_accel[0] = -PLAYER_SPEED;
+        physics_states->x_speed[0] = -PLAYER_SPEED;
     }
     else if (input_state->move_right) {
-        physics_states->x_accel[0] = PLAYER_SPEED;
+        physics_states->x_speed[0] = PLAYER_SPEED;
     }
     else {
-        physics_states->x_accel[0] = 0;
+        physics_states->x_speed[0] = 0;
     }
 
-    const float x_accel = physics_states->x_accel[0];
-    const float y_accel = physics_states->y_accel[0];
+    const float x_speed = physics_states->x_speed[0];
+    const float y_speed = physics_states->y_speed[0];
 
     float dx, dy, distance, dir_x, dir_y;
     // looking at the cursor
@@ -779,8 +784,8 @@ void step_player(float delta) {
 
         create_bullet(x - dir_x * 40,
                       y - dir_y * 40,
-                      -dir_x * BULLET_SPEED + x_accel,
-                      -dir_y * BULLET_SPEED + y_accel);
+                      -dir_x * BULLET_SPEED + x_speed,
+                      -dir_y * BULLET_SPEED + y_speed);
 
         weapon_states->firing_state[curr_weapon] = MAX_FIRING_STATE;
     }
@@ -846,8 +851,8 @@ void step_enemies(float delta) {
             const float direction_x_to_player = dx / distance_to_player;
             const float direction_y_to_player = dy / distance_to_player;
 
-            physics_states->x_accel[physics_id] = -direction_x_to_player * 50;
-            physics_states->y_accel[physics_id] = -direction_y_to_player * 50;
+            physics_states->x_speed[physics_id] = -direction_x_to_player * 50;
+            physics_states->y_speed[physics_id] = -direction_y_to_player * 50;
             physics_states->angle[physics_id] = atan2(dy, dx);
         }
     }
@@ -886,8 +891,8 @@ void step_physics_balls(float delta) {
                                     
                                 if (is_enemy && j_is_bullet) {
                                     // enemy knockback
-                                    physics_states->x[i] -= physics_states->x_accel[i] * delta * 40;
-                                    physics_states->y[i] -= physics_states->y_accel[i] * delta * 40;
+                                    physics_states->x[i] -= physics_states->x_speed[i] * delta * 40;
+                                    physics_states->y[i] -= physics_states->y_speed[i] * delta * 40;
                                     // if we process collisions separately
                                     // we can combine this with what's in step_bullet
                                     // and the result should be cleaner
@@ -925,10 +930,10 @@ void step_physics_balls(float delta) {
                                 else if (push_y < -500) {
                                     push_y = -500;
                                 }
-                                physics_states->x_accel[physics_id] += push_x / mass;
-                                physics_states->y_accel[physics_id] += push_y / mass;
-                                physics_states->x_accel[j_physics_id] -= push_x / j_mass;
-                                physics_states->y_accel[j_physics_id] -= push_y / j_mass;
+                                physics_states->x_speed[physics_id] += push_x / mass;
+                                physics_states->y_speed[physics_id] += push_y / mass;
+                                physics_states->x_speed[j_physics_id] -= push_x / j_mass;
+                                physics_states->y_speed[j_physics_id] -= push_y / j_mass;
                                 add_collision_item(entity_id, j_entity_id);
                             }
                         }
@@ -945,8 +950,8 @@ void step_physics(float delta) {
         step_physics_balls(delta_iter);
         for (table_id_t i = 0; i < physics_states->curr_max; i += 1) {
             if (physics_states->used[i]) {
-                physics_states->x[i] += physics_states->x_accel[i] * delta_iter;
-                physics_states->y[i] += physics_states->y_accel[i] * delta_iter;
+                physics_states->x[i] += physics_states->x_speed[i] * delta_iter;
+                physics_states->y[i] += physics_states->y_speed[i] * delta_iter;
             }
         }
     }
