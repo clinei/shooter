@@ -32,7 +32,7 @@
 
 #define MAX_ENTITY_COUNT 2000
 #define PLAYER_SPEED 200
-#define BULLET_SPEED 200
+#define BULLET_SPEED 600
 #define FIRING_SPEED 300
 #define PHYSICS_BALL_ITER_COUNT 2 // 1 is too little, 5 is too much
 
@@ -368,7 +368,7 @@ void get_angle_to_point(float  x,  float  y,
 table_id_t create_zombie(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
-    add_physics_ball(entity_id, 16);
+    add_physics_ball(entity_id, 14);
     add_sprite_map(entity_id, SPRITE_ZOMBIE, -20, -20, 40);
     add_ai_enemy(entity_id);
 
@@ -378,7 +378,7 @@ table_id_t create_zombie(float x, float y) {
 table_id_t create_player(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
-    add_physics_ball(entity_id, 16);
+    add_physics_ball(entity_id, 14);
     add_sprite_map(entity_id, SPRITE_PLAYER, -20, -20, 40);
 
     return entity_id;
@@ -682,8 +682,9 @@ void step_physics_balls(float delta) {
                         const float mid_y = dy / 2;
                         const float dir_x = dx / distance;
                         const float dir_y = dy / distance;
-                        float push_x = (mid_x + dir_x * radius) / PHYSICS_BALL_ITER_COUNT;
-                        float push_y = (mid_y + dir_y * radius) / PHYSICS_BALL_ITER_COUNT;
+                        const float power = (radius + j_radius - distance);
+                        float push_x = (mid_x + dir_x * radius) * power / PHYSICS_BALL_ITER_COUNT;
+                        float push_y = (mid_y + dir_y * radius) * power / PHYSICS_BALL_ITER_COUNT;
                         if (isnan(push_x)) {
                             push_x = 0;
                         }
