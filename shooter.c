@@ -17,7 +17,8 @@
 
 /*  TASKS
 
-* health and player and zombie death
+* animation using sprite sheets
+  when the player dies, their eyes must turn X_X
 
 * make zombies keep a certain distance from each other
   to avoid weird behavior when knocked back
@@ -340,6 +341,34 @@ struct Collision_Table* get_collision_table() {
     return collision_table;
 }
 
+struct Proximity_Attack {
+    size_t max_count;
+    bool* used;
+    size_t curr_max;
+    table_id_t* entity_id;
+    float* attack_state;
+    float* damage;
+};
+struct Proximity_Attack* proximity_attack;
+void alloc_proximity_attack(size_t max_count) {
+    proximity_attack = malloc(sizeof(struct Proximity_Attack));
+    alloc_table(proximity_attack, max_count);
+    proximity_attack->attack_state = malloc(max_count * sizeof(float));
+    proximity_attack->damage = malloc(max_count * sizeof(float));
+}
+table_id_t add_proximity_attack(table_id_t entity_id,
+                                float attack_state, float damage) {
+    table_id_t index = add_table_item(proximity_attack, entity_id);
+    if (index < proximity_attack->max_count) {
+        proximity_attack->attack_state[index] = attack_state;
+        proximity_attack->damage[index] = damage;
+    }
+    return index;
+}
+void remove_proximity_attack(table_id_t entity_id) {
+    remove_table_item(proximity_attack, entity_id);
+}
+
 // this could be a static table
 struct Hit_Feedback_Table {
     size_t max_count;
@@ -531,10 +560,11 @@ void get_angle_to_point(float  x,  float  y,
 table_id_t create_zombie(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
-    add_physics_ball(entity_id, 14, 2);
+    add_physics_ball(entity_id, 15, 2);
     add_sprite_map(entity_id, SPRITE_ZOMBIE, -20, -20, 40);
     add_ai_enemy(entity_id);
     add_health_item(entity_id, ZOMBIE_HEALTH, curr_time);
+    add_proximity_attack(entity_id, 100, 10);
 
     return entity_id;
 }
@@ -550,7 +580,7 @@ void destroy_zombie(table_id_t entity_id) {
 table_id_t create_player(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
-    add_physics_ball(entity_id, 14, 2);
+    add_physics_ball(entity_id, 15, 2);
     add_sprite_map(entity_id, SPRITE_PLAYER, -20, -20, 40);
     add_health_item(entity_id, PLAYER_HEALTH, curr_time);
 
@@ -710,6 +740,7 @@ void init(const int width, const int height) {
 
     begin_time();
 
+    alloc_proximity_attack(MAX_ENTITY_COUNT);
     alloc_hit_feedback_table(MAX_ENTITY_COUNT);
     alloc_collision_table(MAX_ENTITY_COUNT); // times 2?
     alloc_entity_table(MAX_ENTITY_COUNT);
@@ -747,6 +778,9 @@ void init(const int width, const int height) {
 }
 
 void step_player(float delta) {
+    if (health_table->health_points[0] < 0.01) {
+        return;
+    }
     const float x = physics_states->x[0];
     const float y = physics_states->y[0];
 
@@ -950,8 +984,44 @@ void step_physics(float delta) {
         step_physics_balls(delta_iter);
         for (table_id_t i = 0; i < physics_states->curr_max; i += 1) {
             if (physics_states->used[i]) {
-                physics_states->x[i] += physics_states->x_speed[i] * delta_iter;
-                physics_states->y[i] += physics_states->y_speed[i] * delta_iter;
+                // when the player is dead, it can't be moved
+                if (!(i == 0 && health_table->health_points[0] < 0.01)) {
+                    physics_states->x[i] += physics_states->x_speed[i] * delta_iter;
+                    physics_states->y[i] += physics_states->y_speed[i] * delta_iter;
+                }
+            }
+        }
+    }
+}
+
+void step_collision_resolve(float delta) {
+    for (table_id_t i = 0; i < collision_table->curr_max; i += 1) {
+        const table_id_t entity_id = collision_table->entity_id[i];
+        const table_id_t entity_id_2 = collision_table->entity_id_2[i];
+        const bool is_enemy = find_item_index(ai_enemy, entity_id);
+        const bool with_player = entity_id_2 == 0;
+        if (is_enemy && with_player) {
+            const table_id_t proximity_attack_id = find_item_index(proximity_attack, entity_id);
+            const float proximity_attack_state = proximity_attack->attack_state[proximity_attack_id];
+            if (proximity_attack_state < 0.01) {
+                // should we knockback the player?
+                add_hit_feedback_item(0, 100);
+                const float proximity_attack_damage = proximity_attack->damage[proximity_attack_id];
+                proximity_attack->attack_state[proximity_attack_id] = 100;
+                health_table->health_points[0] -= proximity_attack_damage;
+            }
+        }
+    }
+}
+
+void step_proximity_attack(float delta) {
+    for (table_id_t i = 0; i < proximity_attack->curr_max; i += 1) {
+        if (proximity_attack->used[i]) {
+            if (proximity_attack->attack_state[i] > 0) {
+                proximity_attack->attack_state[i] -= 100;
+            }
+            else {
+                proximity_attack->attack_state[i] = 0;
             }
         }
     }
@@ -971,11 +1041,13 @@ void step() {
     const float delta = step_time();
     clear_collision_table();
     step_physics(delta);
+    step_collision_resolve(delta);
+    step_proximity_attack(delta);
+    step_hit_feedback_table(delta);
     step_weapon_states(delta);
     step_player(delta);
     step_enemies(delta);
     step_bullets(delta);
-    step_hit_feedback_table(delta);
 }
 
 
