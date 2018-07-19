@@ -15,10 +15,26 @@
 
 */
 
+/*  TASKS
+
+* stabilize the collision response by doing multiple iterations
+
+* health and player and zombie death
+
+* ammo pickups
+
+* what about using a circular buffer for tables?
+  that way we don't have to have a table-> used or check it every iteration
+
+* think about different weapon types
+
+*/
+
 #define MAX_ENTITY_COUNT 2000
 #define PLAYER_SPEED 200
 #define BULLET_SPEED 200
 #define FIRING_SPEED 300
+#define PHYSICS_BALL_ITER_COUNT 2 // 1 is too little, 5 is too much
 
 typedef unsigned int table_id_t;
 typedef unsigned int sprite_id_t;
@@ -638,53 +654,59 @@ void step_enemies(float delta) {
 }
 
 void step_physics_balls(float delta) {
-    for (table_id_t i = 0; i < physics_balls->curr_max; i += 1) {
-        const table_id_t entity_id = physics_balls->entity_id[i];
-        const table_id_t physics_id = find_item_index(physics_states, entity_id);
-        const float x = physics_states->x[physics_id];
-        const float y = physics_states->y[physics_id];
-        const float radius = physics_balls->radius[i];
-        for (table_id_t j = 0; j < physics_balls->curr_max; j += 1) {
-            if (j != i) {
-                const table_id_t j_entity_id = physics_balls->entity_id[j];
-                const table_id_t j_physics_id = find_item_index(physics_states, j_entity_id);
-                const float j_x = physics_states->x[j_physics_id];
-                const float j_y = physics_states->y[j_physics_id];
-                const float j_radius = physics_balls->radius[j];
+    for (size_t iter = 0; iter < PHYSICS_BALL_ITER_COUNT; iter += 1) {
+        for (table_id_t i = 0; i < physics_balls->curr_max; i += 1) {
+            const table_id_t entity_id = physics_balls->entity_id[i];
+            const table_id_t physics_id = find_item_index(physics_states, entity_id);
+            const float x = physics_states->x[physics_id] +
+                            physics_states->x_accel[physics_id] * delta;
+            const float y = physics_states->y[physics_id] +
+                            physics_states->y_accel[physics_id] * delta;
+            const float radius = physics_balls->radius[i];
+            for (table_id_t j = 0; j < physics_balls->curr_max; j += 1) {
+                if (j != i) {
+                    const table_id_t j_entity_id = physics_balls->entity_id[j];
+                    const table_id_t j_physics_id = find_item_index(physics_states, j_entity_id);
+                    const float j_x = physics_states->x[j_physics_id] +
+                                      physics_states->x_accel[j_physics_id] * delta;
+                    const float j_y = physics_states->y[j_physics_id] +
+                                      physics_states->y_accel[j_physics_id] * delta;
+                    const float j_radius = physics_balls->radius[j];
 
-                const float dx = (x - j_x);
-                const float dy = (y - j_y);
-                const float distance = sqrt(dx*dx + dy*dy);
+                    const float dx = (x - j_x);
+                    const float dy = (y - j_y);
+                    const float distance = sqrt(dx*dx + dy*dy);
 
-                if (distance < radius + j_radius) {
-                    const float mid_x = dx / 2;
-                    const float mid_y = dy / 2;
-                    const float dir_x = dx / distance;
-                    const float dir_y = dy / distance;
-                    float push_x = mid_x + dir_x * radius;
-                    float push_y = mid_y + dir_y * radius;
-                    if (isnan(push_x)) {
-                        push_x = 0;
+                    if (distance < radius + j_radius) {
+                        const float mid_x = dx / 2;
+                        const float mid_y = dy / 2;
+                        const float dir_x = dx / distance;
+                        const float dir_y = dy / distance;
+                        float push_x = (mid_x + dir_x * radius) / PHYSICS_BALL_ITER_COUNT;
+                        float push_y = (mid_y + dir_y * radius) / PHYSICS_BALL_ITER_COUNT;
+                        if (isnan(push_x)) {
+                            push_x = 0;
+                        }
+                        if (isnan(push_y)) {
+                            push_y = 0;
+                        }
+                        if (push_x > 500) {
+                            push_x = 500;
+                        }
+                        else if (push_x < -500) {
+                            push_x = -500;
+                        }
+                        if (push_y > 500) {
+                            push_y = 500;
+                        }
+                        else if (push_y < -500) {
+                            push_y = -500;
+                        }
+                        physics_states->x_accel[physics_id] += push_x;
+                        physics_states->y_accel[physics_id] += push_y;
+                        physics_states->x_accel[j_physics_id] -= push_x;
+                        physics_states->y_accel[j_physics_id] -= push_y;
                     }
-                    if (isnan(push_y)) {
-                        push_y = 0;
-                    }
-                    if (push_x > 500) {
-                        push_x = 500;
-                    }
-                    if (push_y > 500) {
-                        push_y = 500;
-                    }
-                    if (push_x < -500) {
-                        push_x = -500;
-                    }
-                    if (push_y < -500) {
-                        push_y = -500;
-                    }
-                    physics_states->x_accel[physics_id] += push_x;
-                    physics_states->y_accel[physics_id] += push_y;
-                    physics_states->x_accel[j_physics_id] -= push_x;
-                    physics_states->y_accel[j_physics_id] -= push_y;
                 }
             }
         }
