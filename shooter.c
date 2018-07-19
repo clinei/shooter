@@ -32,11 +32,16 @@
 
 #define PLAYER_SPEED 200
 #define BULLET_SPEED 2000
-#define FIRING_SPEED 300
+#define FIRING_SPEED 200
+#define HIT_FEEDBACK_SPEED 400
+#define MAX_FIRING_STATE 100
+#define PLAYER_HEALTH 40
+#define ZOMBIE_HEALTH 2
+#define BULLET_DAMAGE 1
 #define BULLET_LIFETIME 5
 #define MAX_ENTITY_COUNT 2000
 #define PHYSICS_ITER_COUNT 5
-#define PHYSICS_BALL_ITER_COUNT 1
+#define PHYSICS_BALL_ITER_COUNT 3
 
 typedef unsigned int table_id_t;
 typedef unsigned int sprite_id_t;
@@ -272,17 +277,21 @@ struct Physics_Balls {
     size_t curr_max;
     table_id_t* entity_id;
     float* radius;
+    float* mass;
 };
 struct Physics_Balls* physics_balls;
 void alloc_physics_balls(size_t max_count) {
     physics_balls = malloc(sizeof(struct Physics_Balls));
     alloc_table(physics_balls, max_count);
     physics_balls->radius = malloc(max_count * sizeof(float));
+    physics_balls->mass = malloc(max_count * sizeof(float));
 }
-table_id_t add_physics_ball(table_id_t entity_id, float radius) {
+table_id_t add_physics_ball(table_id_t entity_id,
+                            float radius, float mass) {
     table_id_t index = add_table_item(physics_balls, entity_id);
     if (index < physics_balls->max_count) {
         physics_balls->radius[index] = radius;
+        physics_balls->mass[index] = mass;
     }
     return index;
 }
@@ -517,10 +526,10 @@ void get_angle_to_point(float  x,  float  y,
 table_id_t create_zombie(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
-    add_physics_ball(entity_id, 14);
+    add_physics_ball(entity_id, 14, 2);
     add_sprite_map(entity_id, SPRITE_ZOMBIE, -20, -20, 40);
     add_ai_enemy(entity_id);
-    add_health_item(entity_id, 40, curr_time);
+    add_health_item(entity_id, ZOMBIE_HEALTH, curr_time);
 
     return entity_id;
 }
@@ -536,9 +545,9 @@ void destroy_zombie(table_id_t entity_id) {
 table_id_t create_player(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
-    add_physics_ball(entity_id, 14);
+    add_physics_ball(entity_id, 14, 2);
     add_sprite_map(entity_id, SPRITE_PLAYER, -20, -20, 40);
-    add_health_item(entity_id, 40, curr_time);
+    add_health_item(entity_id, PLAYER_HEALTH, curr_time);
 
     return entity_id;
 }
@@ -546,9 +555,9 @@ table_id_t create_player(float x, float y) {
 table_id_t create_bullet(float x, float y, float x_accel, float y_accel) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, x_accel, y_accel);
-    add_physics_ball(entity_id, 4);
+    add_physics_ball(entity_id, 4, 1);
     add_sprite_map(entity_id, SPRITE_BULLET, -8, -8, 16);
-    add_bullet(entity_id, 4, curr_time);
+    add_bullet(entity_id, BULLET_DAMAGE, curr_time);
 
     return entity_id;
 }
@@ -768,12 +777,12 @@ void step_player(float delta) {
     if (input_state->shoot &&
         weapon_states->firing_state[curr_weapon] < 0.01) {
 
-        create_bullet(x - dir_x * 14,
-                      y - dir_y * 14,
+        create_bullet(x - dir_x * 40,
+                      y - dir_y * 40,
                       -dir_x * BULLET_SPEED + x_accel,
                       -dir_y * BULLET_SPEED + y_accel);
 
-        weapon_states->firing_state[curr_weapon] = 1;
+        weapon_states->firing_state[curr_weapon] = MAX_FIRING_STATE;
     }
 }
 void step_bullets(float delta) {
@@ -824,7 +833,7 @@ void step_enemies(float delta) {
             const table_id_t entity_id = ai_enemy->entity_id[i];
             const table_id_t health_id = find_item_index(health_table, entity_id);
             const float health_points = health_table->health_points[health_id];
-            if (health_points < 0) {
+            if (health_points < 0.1) {
                 destroy_zombie(entity_id);
                 break;
             }
@@ -845,61 +854,83 @@ void step_enemies(float delta) {
 }
 
 void step_physics_balls(float delta) {
-    for (table_id_t i = 0; i < physics_balls->curr_max; i += 1) {
-        if (physics_balls->used[i]) {
-            const table_id_t entity_id = physics_balls->entity_id[i];
-            const table_id_t physics_id = find_item_index(physics_states, entity_id);
-            const float x = physics_states->x[physics_id] +
-                            physics_states->x_accel[physics_id] * delta;
-            const float y = physics_states->y[physics_id] +
-                            physics_states->y_accel[physics_id] * delta;
-            const float radius = physics_balls->radius[i];
-            for (table_id_t j = 0; j < physics_balls->curr_max; j += 1) {
-                if (physics_balls->used[j]) {
-                    if (j != i) {
-                        const table_id_t j_entity_id = physics_balls->entity_id[j];
-                        const table_id_t j_physics_id = find_item_index(physics_states, j_entity_id);
-                        const float j_x = physics_states->x[j_physics_id] +
-                                            physics_states->x_accel[j_physics_id] * delta;
-                        const float j_y = physics_states->y[j_physics_id] +
-                                            physics_states->y_accel[j_physics_id] * delta;
-                        const float j_radius = physics_balls->radius[j];
+    const float delta_iter = delta / PHYSICS_BALL_ITER_COUNT;
+    for (size_t iter = 0; iter < PHYSICS_BALL_ITER_COUNT; iter += 1) {
+        for (table_id_t i = 0; i < physics_balls->curr_max; i += 1) {
+            if (physics_balls->used[i]) {
+                const table_id_t entity_id = physics_balls->entity_id[i];
+                const table_id_t physics_id = find_item_index(physics_states, entity_id);
+                const bool is_bullet = find_item_index(bullets, entity_id) < bullets->curr_max;
+                const bool is_enemy = find_item_index(ai_enemy, entity_id) < ai_enemy->curr_max;
+                const float x = physics_states->x[physics_id];
+                const float y = physics_states->y[physics_id];
+                const float radius = physics_balls->radius[i];
+                const float mass = physics_balls->mass[i];
+                for (table_id_t j = 0; j < physics_balls->curr_max; j += 1) {
+                    if (physics_balls->used[j]) {
+                        if (j != i) {
+                            const table_id_t j_entity_id = physics_balls->entity_id[j];
+                            const table_id_t j_physics_id = find_item_index(physics_states, j_entity_id);
+                            const bool j_is_bullet = find_item_index(bullets, j_entity_id) < bullets->curr_max;
+                            const bool j_is_enemy = find_item_index(ai_enemy, j_entity_id) < ai_enemy->curr_max;
+                            const float j_x = physics_states->x[j_physics_id];
+                            const float j_y = physics_states->y[j_physics_id];
+                            const float j_radius = physics_balls->radius[j];
+                            const float j_mass = physics_balls->mass[j];
 
-                        const float dx = (x - j_x);
-                        const float dy = (y - j_y);
-                        const float distance = sqrt(dx*dx + dy*dy);
+                            const float dx = (x - j_x);
+                            const float dy = (y - j_y);
+                            const float distance = sqrt(dx*dx + dy*dy);
 
-                        if (distance < radius + j_radius) {
-                            const float mid_x = dx / 2;
-                            const float mid_y = dy / 2;
-                            const float dir_x = dx / distance;
-                            const float dir_y = dy / distance;
-                            const float power = (radius + j_radius - distance);
-                            float push_x = (mid_x + dir_x * radius) * power;
-                            float push_y = (mid_y + dir_y * radius) * power;
-                            if (isnan(push_x)) {
-                                push_x = 0;
+                            if (distance < radius + j_radius) {
+                                    
+                                if (is_enemy && j_is_bullet) {
+                                    // enemy knockback
+                                    physics_states->x[i] -= physics_states->x_accel[i] * delta * 40;
+                                    physics_states->y[i] -= physics_states->y_accel[i] * delta * 40;
+                                    // if we process collisions separately
+                                    // we can combine this with what's in step_bullet
+                                    // and the result should be cleaner
+                                    add_collision_item(j_entity_id, entity_id);
+                                    // we're gonna destroy this bullet in step_bullets
+                                    // this bullet can't hurt anyone else
+                                    remove_physics_state(j_entity_id);
+                                    remove_sprite_map(j_entity_id);
+                                    remove_physics_ball(j_entity_id);
+                                    break;
+                                }
+
+                                const float mid_x = dx / 2;
+                                const float mid_y = dy / 2;
+                                const float dir_x = dx / distance;
+                                const float dir_y = dy / distance;
+                                const float power = (radius + j_radius - distance);
+                                float push_x = (mid_x + dir_x * radius) * power;
+                                float push_y = (mid_y + dir_y * radius) * power;
+                                if (isnan(push_x)) {
+                                    push_x = 0;
+                                }
+                                if (isnan(push_y)) {
+                                    push_y = 0;
+                                }
+                                if (push_x > 500) {
+                                    push_x = 500;
+                                }
+                                else if (push_x < -500) {
+                                    push_x = -500;
+                                }
+                                if (push_y > 500) {
+                                    push_y = 500;
+                                }
+                                else if (push_y < -500) {
+                                    push_y = -500;
+                                }
+                                physics_states->x_accel[physics_id] += push_x / mass;
+                                physics_states->y_accel[physics_id] += push_y / mass;
+                                physics_states->x_accel[j_physics_id] -= push_x / j_mass;
+                                physics_states->y_accel[j_physics_id] -= push_y / j_mass;
+                                add_collision_item(entity_id, j_entity_id);
                             }
-                            if (isnan(push_y)) {
-                                push_y = 0;
-                            }
-                            if (push_x > 500) {
-                                push_x = 500;
-                            }
-                            else if (push_x < -500) {
-                                push_x = -500;
-                            }
-                            if (push_y > 500) {
-                                push_y = 500;
-                            }
-                            else if (push_y < -500) {
-                                push_y = -500;
-                            }
-                            physics_states->x_accel[physics_id] += push_x;
-                            physics_states->y_accel[physics_id] += push_y;
-                            physics_states->x_accel[j_physics_id] -= push_x;
-                            physics_states->y_accel[j_physics_id] -= push_y;
-                            add_collision_item(entity_id, j_entity_id);
                         }
                     }
                 }
@@ -923,7 +954,7 @@ void step_physics(float delta) {
 
 void step_hit_feedback_table(float delta) {
     for (table_id_t i = 0; i < hit_feedback_table->curr_max; i += 1) {
-        hit_feedback_table->amount[i] -= 100 * delta;
+        hit_feedback_table->amount[i] -= HIT_FEEDBACK_SPEED * delta;
         if (hit_feedback_table->amount[i] < 0) {
             remove_table_item(hit_feedback_table, hit_feedback_table->entity_id[i]);
         }
