@@ -17,7 +17,10 @@
 
 /*  TASKS
 
-* stabilize the collision response by doing multiple iterations
+* convert delta to ms
+
+* add timestamp to bullets so they can be deleted
+  after they've lost speed and can't hurt anybody
 
 * health and player and zombie death
 
@@ -30,10 +33,11 @@
 
 */
 
-#define MAX_ENTITY_COUNT 2000
 #define PLAYER_SPEED 200
 #define BULLET_SPEED 600
 #define FIRING_SPEED 300
+#define BULLET_LIFETIME 5
+#define MAX_ENTITY_COUNT 2000
 #define PHYSICS_BALL_ITER_COUNT 2 // 1 is too little, 5 is too much
 
 typedef unsigned int table_id_t;
@@ -55,6 +59,45 @@ enum Sprites {
     SPRITE_ZOMBIE = 2,
     SPRITE_BULLET = 3
 };
+
+struct timespec start_time;
+struct timespec curr_time;
+struct timespec prev_time;
+
+// stop must be bigger than start
+void timespec_diff(const struct timespec* stop,
+                   const struct timespec* start,
+                         struct timespec* result) {
+
+    if (stop->tv_nsec < start->tv_nsec) {
+        result->tv_sec = stop->tv_sec - start->tv_sec - 1;
+        result->tv_nsec = stop->tv_nsec - start->tv_nsec + 1000000000;
+    }
+    else {
+        result->tv_sec = stop->tv_sec - start->tv_sec;
+        result->tv_nsec = stop->tv_nsec - start->tv_nsec;
+    }
+}
+float timespec_to_float(const struct timespec* spec) {
+    // maybe return ms instead of seconds
+    return (float)spec->tv_sec + (float)(spec->tv_nsec / 1000000) / 1000;
+}
+float difftime_float(const struct timespec* stop, const struct timespec* start) {
+    struct timespec delta;
+    timespec_diff(stop, start, &delta);
+    return timespec_to_float(&delta);
+}
+
+void begin_time() {
+    clock_gettime(CLOCK_REALTIME, &start_time);
+}
+float step_time() {
+    clock_gettime(CLOCK_REALTIME, &curr_time);
+    timespec_diff(&curr_time, &start_time, &curr_time);
+    const float delta = difftime_float(&curr_time, &prev_time);
+    prev_time = curr_time;
+    return delta;
+}
 
 // table abstraction
 // all concrete tables much have these elements first
@@ -323,18 +366,24 @@ struct Bullet_Table {
     size_t curr_max;
     table_id_t* entity_id;
     float* damage;
+    struct timespec* created_at;
     // maybe type?
 };
 struct Bullet_Table* bullets;
 void alloc_bullets(size_t max_count) {
     bullets = malloc(sizeof(struct Bullet_Table));
     alloc_table(bullets, max_count);
+    bullets->damage = malloc(max_count * sizeof(float));
+    bullets->created_at = malloc(max_count * sizeof(struct timespec));
 }
-table_id_t add_bullet(table_id_t entity_id, float damage) {
+table_id_t add_bullet(table_id_t entity_id,
+                      float damage, struct timespec created_at) {
+
     table_id_t index = add_table_item(bullets, entity_id);
 
     if (index < bullets->max_count) {
         bullets->damage[index] = damage;
+        bullets->created_at[index] = created_at;
     }
 
     return index;
@@ -389,7 +438,7 @@ table_id_t create_bullet(float x, float y, float x_accel, float y_accel) {
     add_physics_state(entity_id, x, y, x_accel, y_accel);
     add_physics_ball(entity_id, 4);
     add_sprite_map(entity_id, SPRITE_BULLET, -8, -8, 16);
-    add_bullet(entity_id, 4);
+    add_bullet(entity_id, 4, curr_time);
 
     return entity_id;
 }
@@ -531,11 +580,11 @@ void set_screen_size(const int width, const int height) {
     screen_height = height;
 }
 
-clock_t prev_time;
 EMSCRIPTEN_KEEPALIVE
 void init(const int width, const int height) {
     set_screen_size(width, height);
-    prev_time = clock();
+
+    begin_time();
 
     alloc_entity_table(MAX_ENTITY_COUNT);
     alloc_physics_states(MAX_ENTITY_COUNT);
@@ -606,8 +655,8 @@ void step_player(float delta) {
     if (input_state->shoot &&
         weapon_states->firing_state[curr_weapon] < 0.01) {
 
-        create_bullet(x - dir_x * 20,
-                      y - dir_y * 20,
+        create_bullet(x - dir_x * 14,
+                      y - dir_y * 14,
                       -dir_x * BULLET_SPEED + x_accel,
                       -dir_y * BULLET_SPEED + y_accel);
 
@@ -618,6 +667,12 @@ void step_bullets(float delta) {
     for (table_id_t i = 0; i < bullets->curr_max; i += 1) {
         if (bullets->used[i]) {
             const table_id_t entity_id = bullets->entity_id[i];
+            const float damage = bullets->damage[i];
+            const struct timespec created_at = bullets->created_at[i];
+            if (difftime_float(&curr_time, &created_at) > BULLET_LIFETIME) {
+                destroy_bullet(entity_id);
+                break;
+            }
             if (entity_id > bullets->curr_max) {
                 // printf("WRONG\n");
                 // abort();
@@ -723,10 +778,7 @@ void step_physics(float delta) {
 
 EMSCRIPTEN_KEEPALIVE
 void step() {
-    const clock_t curr_time = clock();
-    const float delta = (curr_time - prev_time) / 1000.0 / 1000.0;
-    prev_time = curr_time;
-
+    const float delta = step_time();
     step_weapon_states(delta);
     step_player(delta);
     step_enemies(delta);
