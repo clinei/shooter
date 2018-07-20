@@ -20,9 +20,6 @@
 * animation using sprite sheets
   when the player dies, their eyes must turn X_X
 
-* make zombies keep a certain distance from each other
-  to avoid weird behavior when knocked back
-
 * make a separate game clock
   and make everything run in a web worker
   so we can pause and continue
@@ -30,13 +27,15 @@
 * ammo pickups
 
 * what about using a circular buffer for tables?
-  that way we don't have to have a table-> used or check it every iteration
+  that way we don't have to have a table->used or check it every iteration
+  and we can have general functions for static and dynamic tables
 
 * think about different weapon types
 
 */
 
 #define PLAYER_SPEED 200
+#define ZOMBIE_SPEED 100
 #define BULLET_SPEED 2000
 #define FIRING_SPEED 200
 #define HIT_FEEDBACK_SPEED 400
@@ -46,6 +45,8 @@
 #define BULLET_DAMAGE 1
 #define BULLET_LIFETIME 5
 #define MAX_ENTITY_COUNT 2000
+#define AI_ENEMY_PREFERRED_DISTANCE 40
+#define AI_ENEMY_ITER_COUNT 3 // @Test if this is actually helping stabilize
 #define PHYSICS_ITER_COUNT 5
 #define PHYSICS_BALL_ITER_COUNT 3
 
@@ -535,14 +536,22 @@ void remove_health_item(table_id_t entity_id) {
     remove_table_item(health_table, entity_id);
 }
 
+void get_distance_to_point(float x, float y,
+                           float x2, float y2,
+                           float* dx, float* dy,
+                           float * distance) {
+
+    *dx = x2 - x;
+    *dy = y2 - y;
+    *distance = sqrt((*dx)*(*dx) + (*dy)*(*dy));
+}
 void get_direction_to_point(float  x,  float  y,
                             float  x2, float  y2,
                             float* dx, float* dy,
                             float* distance,
                             float* dir_x, float* dir_y) {
-    *dx = x2 - x;
-    *dy = y2 - y;
-    *distance = sqrt((*dx)*(*dx) + (*dy)*(*dy));
+
+    get_distance_to_point(x, y, x2, y2, dx, dy, distance);
     *dir_x = (*dx) / (*distance);
     *dir_y = (*dy) / (*distance);
 }
@@ -864,33 +873,6 @@ void step_bullets(float delta) {
         }
     }
 }
-void step_enemies(float delta) {
-    const float player_x = physics_states->x[0];
-    const float player_y = physics_states->y[0];
-    for (table_id_t i = 0; i < ai_enemy->curr_max; i += 1) {
-        if (ai_enemy->used[i]) {
-            const table_id_t entity_id = ai_enemy->entity_id[i];
-            const table_id_t health_id = find_item_index(health_table, entity_id);
-            const float health_points = health_table->health_points[health_id];
-            if (health_points < 0.1) {
-                destroy_zombie(entity_id);
-                break;
-            }
-            const table_id_t physics_id = find_item_index(physics_states, entity_id);
-            const float x = physics_states->x[physics_id];
-            const float y = physics_states->y[physics_id];
-            const float dx = x - player_x;
-            const float dy = y - player_y;
-            const float distance_to_player = sqrt(dx*dx + dy*dy);
-            const float direction_x_to_player = dx / distance_to_player;
-            const float direction_y_to_player = dy / distance_to_player;
-
-            physics_states->x_speed[physics_id] = -direction_x_to_player * 50;
-            physics_states->y_speed[physics_id] = -direction_y_to_player * 50;
-            physics_states->angle[physics_id] = atan2(dy, dx);
-        }
-    }
-}
 
 void step_physics_balls(float delta) {
     const float delta_iter = delta / PHYSICS_BALL_ITER_COUNT;
@@ -1014,6 +996,51 @@ void step_collision_resolve(float delta) {
     }
 }
 
+void step_ai_enemy(float delta) {
+    const float delta_iter =  delta / AI_ENEMY_ITER_COUNT;
+    const float player_x = physics_states->x[0];
+    const float player_y = physics_states->y[0];
+    for (size_t iter = 0; iter < AI_ENEMY_ITER_COUNT; iter += 1) {
+        for (table_id_t i = 0; i < ai_enemy->curr_max; i += 1) {
+            if (ai_enemy->used[i]) {
+                const table_id_t entity_id = ai_enemy->entity_id[i];
+                const table_id_t health_id = find_item_index(health_table, entity_id);
+                const float health_points = health_table->health_points[health_id];
+                if (health_points < 0.1) {
+                    destroy_zombie(entity_id);
+                    break;
+                }
+                const table_id_t physics_id = find_item_index(physics_states, entity_id);
+                const float x = physics_states->x[physics_id];
+                const float y = physics_states->y[physics_id];
+                float player_dx, player_dy, player_distance, player_dir_x, player_dir_y, player_angle;
+                get_angle_to_point(player_x, player_y, x, y,
+                                &player_dx, &player_dy, &player_distance,
+                                &player_dir_x, &player_dir_y, &player_angle);
+
+                physics_states->x_speed[physics_id] = -player_dir_x * ZOMBIE_SPEED;
+                physics_states->y_speed[physics_id] = -player_dir_y * ZOMBIE_SPEED;
+                physics_states->angle[physics_id] = player_angle;
+                for (table_id_t j = 0; j < ai_enemy->curr_max; j += 1) {
+                    if (j != i && ai_enemy->used[j]) {
+                        const table_id_t j_entity_id = ai_enemy->entity_id[j];
+                        const table_id_t j_physics_id = find_item_index(physics_states, j_entity_id);
+                        const float j_x = physics_states->x[j_physics_id];
+                        const float j_y = physics_states->y[j_physics_id];
+                        float dx, dy, distance;
+                        get_distance_to_point(x, y, j_x, j_y, &dx, &dy, &distance);
+                        const float distance_diff = distance - AI_ENEMY_PREFERRED_DISTANCE;
+                        if (distance_diff < 0) {
+                            physics_states->x[physics_id] += distance_diff * dx * delta_iter;
+                            physics_states->y[physics_id] += distance_diff * dy * delta_iter;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void step_proximity_attack(float delta) {
     for (table_id_t i = 0; i < proximity_attack->curr_max; i += 1) {
         if (proximity_attack->used[i]) {
@@ -1046,7 +1073,7 @@ void step() {
     step_hit_feedback_table(delta);
     step_weapon_states(delta);
     step_player(delta);
-    step_enemies(delta);
+    step_ai_enemy(delta);
     step_bullets(delta);
 }
 
