@@ -17,12 +17,10 @@
 
 /*  TASKS
 
-* animation using sprite sheets
-  when the player dies, their eyes must turn X_X
-
 * make a separate game clock
   and make everything run in a web worker
   so we can pause and continue
+  actually, we can just listen for the window blur event
 
 * ammo pickups
 
@@ -54,6 +52,7 @@ typedef unsigned int table_id_t;
 typedef unsigned int sprite_id_t;
 typedef float sprite_origin_t;
 typedef float sprite_size_t;
+typedef unsigned char sprite_variant_t;
 
 EMSCRIPTEN_KEEPALIVE
 float randf() {
@@ -408,10 +407,11 @@ struct Sprite_Map {
     bool* used;
     size_t curr_max;
     table_id_t* entity_id;
-    sprite_id_t*     sprite_id;
-    sprite_origin_t* sprite_origin_x;
-    sprite_origin_t* sprite_origin_y;
-    sprite_size_t*   sprite_size;
+    sprite_id_t*      sprite_id;
+    sprite_origin_t*  sprite_origin_x;
+    sprite_origin_t*  sprite_origin_y;
+    sprite_size_t*    sprite_size;
+    sprite_variant_t* sprite_variant;
 };
 struct Sprite_Map* sprite_map;
 void alloc_sprite_map(size_t max_count) {
@@ -421,10 +421,11 @@ void alloc_sprite_map(size_t max_count) {
     sprite_map->sprite_origin_x = malloc(max_count * sizeof(sprite_origin_t));
     sprite_map->sprite_origin_y = malloc(max_count * sizeof(sprite_origin_t));
     sprite_map->sprite_size = malloc(max_count * sizeof(sprite_size_t));
+    sprite_map->sprite_variant = malloc(max_count * sizeof(sprite_variant_t));
 }
 table_id_t add_sprite_map(table_id_t entity_id, sprite_id_t sprite_id,
                           sprite_origin_t sprite_origin_x, sprite_origin_t sprite_origin_y,
-                          sprite_size_t sprite_size) {
+                          sprite_size_t sprite_size, sprite_variant_t sprite_variant) {
 
     table_id_t index = add_table_item(sprite_map, entity_id);
     if (index < sprite_map->max_count) {
@@ -432,6 +433,7 @@ table_id_t add_sprite_map(table_id_t entity_id, sprite_id_t sprite_id,
         sprite_map->sprite_origin_x[index] = sprite_origin_x;
         sprite_map->sprite_origin_y[index] = sprite_origin_y;
         sprite_map->sprite_size[index] = sprite_size;
+        sprite_map->sprite_variant[index] = sprite_variant;
     }
     return index;
 }
@@ -570,7 +572,7 @@ table_id_t create_zombie(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
     add_physics_ball(entity_id, 15, 2);
-    add_sprite_map(entity_id, SPRITE_ZOMBIE, -20, -20, 40);
+    add_sprite_map(entity_id, SPRITE_ZOMBIE, -20, -20, 40, 0);
     add_ai_enemy(entity_id);
     add_health_item(entity_id, ZOMBIE_HEALTH, curr_time);
     add_proximity_attack(entity_id, 100, 10);
@@ -590,7 +592,7 @@ table_id_t create_player(float x, float y) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, 0.0, 0.0);
     add_physics_ball(entity_id, 15, 2);
-    add_sprite_map(entity_id, SPRITE_PLAYER, -20, -20, 40);
+    add_sprite_map(entity_id, SPRITE_PLAYER, -20, -20, 40, 0);
     add_health_item(entity_id, PLAYER_HEALTH, curr_time);
 
     return entity_id;
@@ -600,7 +602,7 @@ table_id_t create_bullet(float x, float y, float x_speed, float y_speed) {
     const table_id_t entity_id = create_entity();
     add_physics_state(entity_id, x, y, x_speed, y_speed);
     add_physics_ball(entity_id, 4, 1);
-    add_sprite_map(entity_id, SPRITE_BULLET, -8, -8, 16);
+    add_sprite_map(entity_id, SPRITE_BULLET, -8, -8, 16, 0);
     add_bullet(entity_id, BULLET_DAMAGE, curr_time);
 
     return entity_id;
@@ -986,8 +988,12 @@ void step_collision_resolve(float delta) {
             const table_id_t proximity_attack_id = find_item_index(proximity_attack, entity_id);
             const float proximity_attack_state = proximity_attack->attack_state[proximity_attack_id];
             if (proximity_attack_state < 0.01) {
+                // a zombie attacks the player
                 // should we knockback the player?
                 add_hit_feedback_item(0, 100);
+                // end bite
+                const table_id_t sprite_map_id = find_item_index(sprite_map, entity_id);
+                sprite_map->sprite_variant[sprite_map_id] = 0;
                 const float proximity_attack_damage = proximity_attack->damage[proximity_attack_id];
                 proximity_attack->attack_state[proximity_attack_id] = 100;
                 health_table->health_points[0] -= proximity_attack_damage;
@@ -1045,10 +1051,17 @@ void step_proximity_attack(float delta) {
     for (table_id_t i = 0; i < proximity_attack->curr_max; i += 1) {
         if (proximity_attack->used[i]) {
             if (proximity_attack->attack_state[i] > 0) {
-                proximity_attack->attack_state[i] -= 100;
+                proximity_attack->attack_state[i] -= 100 * delta;
             }
             else {
                 proximity_attack->attack_state[i] = 0;
+            }
+            if (proximity_attack->attack_state[i] < 20 &&
+                proximity_attack->attack_state[i] > 0) {
+                // prepare to bite
+                const table_id_t entity_id = proximity_attack->entity_id[i];
+                const table_id_t sprite_map_id = find_item_index(sprite_map, entity_id);
+                sprite_map->sprite_variant[sprite_map_id] = 2;
             }
         }
     }
@@ -1057,8 +1070,18 @@ void step_proximity_attack(float delta) {
 void step_hit_feedback_table(float delta) {
     for (table_id_t i = 0; i < hit_feedback_table->curr_max; i += 1) {
         hit_feedback_table->amount[i] -= HIT_FEEDBACK_SPEED * delta;
+        const table_id_t entity_id = hit_feedback_table->entity_id[i];
+        const table_id_t sprite_map_id = find_item_index(sprite_map, entity_id);
         if (hit_feedback_table->amount[i] < 0) {
             remove_table_item(hit_feedback_table, hit_feedback_table->entity_id[i]);
+            const table_id_t health_id = find_item_index(sprite_map, entity_id);
+            const float health_points = health_table->health_points[health_id];
+            if (health_points > 0) {
+                sprite_map->sprite_variant[sprite_map_id] = 0;
+            }
+        }
+        else {
+            sprite_map->sprite_variant[sprite_map_id] = 1;
         }
     }
 }

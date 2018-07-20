@@ -71,6 +71,7 @@ function get_sprite_map() {
     const ptr_sprite_origin_x = Module.HEAP32[(ptr+4*5)>>2];
     const ptr_sprite_origin_y = Module.HEAP32[(ptr+4*6)>>2];
     const ptr_sprite_size     = Module.HEAP32[(ptr+4*7)>>2];
+    const ptr_sprite_variant  = Module.HEAP32[(ptr+4*8)>>2];
 
     return {
         max_count,
@@ -81,6 +82,7 @@ function get_sprite_map() {
         sprite_origin_x: new Float32Array(Module.HEAPF32.buffer, ptr_sprite_origin_x, max_count),
         sprite_origin_y: new Float32Array(Module.HEAPF32.buffer, ptr_sprite_origin_y, max_count),
         sprite_size:     new Float32Array(Module.HEAPF32.buffer, ptr_sprite_size,     max_count),
+        sprite_variant:  new Uint8Array(Module.HEAPU8.buffer,    ptr_sprite_variant,  max_count),
         ptr,
     };
 }
@@ -126,6 +128,19 @@ async function fetchImages(urls) {
     return Promise.all(promises);
 }
 
+function downscale(scale, imgs) {
+    const canvases = [];
+    for (let img of imgs) {
+        const cnv = document.createElement('canvas');
+        const ct = cnv.getContext('2d');
+        cnv.width = img.width / scale;
+        cnv.height = img.height / scale;
+        ct.drawImage(img, 0, 0, cnv.width, cnv.height);
+        canvases.push(cnv);
+    }
+    return canvases;
+}
+
 async function main() {
     window.addEventListener('resize', resize);
     resize();
@@ -136,11 +151,14 @@ async function main() {
         set_screen_size(window.innerWidth, window.innerHeight);
     }
 
-    const sprites = await fetchImages(['sprites/not_found.png',
-                                       'sprites/player.png',
-                                       'sprites/zombie.png',
-                                       'sprites/bullet.png'
-                                      ]);
+    const background = downscale(1, await fetchImages(['background.png']))[0];
+
+    const sprites = downscale(6,
+                              await fetchImages(['sprites/not_found.png',
+                                                 'sprites/player.png',
+                                                 'sprites/zombie.png',
+                                                 'sprites/bullet.png'
+                                                ]));
 
     requestAnimationFrame(frame);
     function frame() {
@@ -158,8 +176,23 @@ async function main() {
         const sprite_map = get_sprite_map();
         const physics_states = get_physics_states();
 
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = '#000';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const repeats_x = Math.ceil(canvas.width / background.width);
+        const repeats_y = Math.ceil(canvas.height / background.height);
+        for (let i = 0; i < repeats_x; i += 1) {
+            const x = i * background.width;
+            for (let j = 0; j < repeats_y; j += 1) {
+                const y = j * background.height;
+                ctx.drawImage(background, x, y);
+            }
+        }
+        ctx.globalAlpha = 0.5;
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.fillStyle = '#210';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 1.0;
 
         for (let i = 0; i < sprite_map.curr_max; i += 1) {
             if (sprite_map.used[i]) {
@@ -168,8 +201,10 @@ async function main() {
                 const sprite_origin_x = sprite_map.sprite_origin_x[i];
                 const sprite_origin_y = sprite_map.sprite_origin_y[i];
                 const sprite_size = sprite_map.sprite_size[i];
+                const sprite_variant = sprite_map.sprite_variant[i];
                 const sprite = sprites[sprite_id];
-                let scale = sprite_size / sprite.width;
+                const sprite_size_actual = sprite.height;
+                let scale = sprite_size / sprite_size_actual;
                 if (scale > 100) {
                     scale = 1;
                 }
@@ -183,9 +218,9 @@ async function main() {
                 ctx.translate(x, y);
                 ctx.rotate(angle);
                 ctx.translate(sprite_origin_x, sprite_origin_y);
-                ctx.scale(scale, scale);
 
-                ctx.drawImage(sprite, 0, 0);
+                ctx.drawImage(sprite, sprite_variant * sprite_size_actual, 0,
+                              sprite_size_actual, sprite_size_actual, 0, 0, sprite_size, sprite_size);
 
                 ctx.restore();
                 ctx.save();
@@ -197,7 +232,8 @@ async function main() {
                     hit_feedback_amount > 0) {
 
                     ctx.beginPath();
-                    ctx.arc(x, y, sprite_size * scale * 2.4, 0, Math.PI*2);
+                    ctx.arc(x, y, sprite_size * 0.39, 0, Math.PI*2);
+                    ctx.closePath();
                     ctx.fillStyle = '#f00';
                     ctx.globalAlpha = hit_feedback_amount / 100;
                     ctx.fill();
