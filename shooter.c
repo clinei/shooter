@@ -909,23 +909,13 @@ void init(const int width, const int height) {
     create_player(screen_width / 2.0, screen_height / 2.0);
 
     start_wave();
-
-    /*
-    // create some enemies for us to fight
-    // in grid formation
-    const int padding = 60;
-    const int distance = 60;
-    // nested because fuck it
-    for (int i = 0; i < 4; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            const float x = padding + i * distance;
-            const float y = padding + j * distance;
-            create_zombie(x, y);
-        }
-    }
-    */
 }
 
+uint score = 0;
+EMSCRIPTEN_KEEPALIVE
+uint get_score() {
+    return score;
+}
 void step_player(float delta) {
     if (health_table->health_points[0] < 0.01) {
         return;
@@ -1152,7 +1142,10 @@ void step_ai_enemy(float delta) {
                 const table_id_t health_id = find_item_index(health_table, entity_id);
                 const float health_points = health_table->health_points[health_id];
                 if (health_points < 0.1) {
-                    destroy_zombie(entity_id);
+                    if (enemy_type == ENEMY_PLAIN) {
+                        destroy_zombie(entity_id);
+                        score += 200 * curr_wave;
+                    }
                     wave_completion.remaining[enemy_type] -= 1;
                     break;
                 }

@@ -2,6 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const step = Module.cwrap('step');
+const get_score = Module.cwrap('get_score');
 const set_screen_size = Module.cwrap('set_screen_size', null, ['number', 'number']);
 
 function find_item_index(table, entity_id) {
@@ -242,6 +243,15 @@ async function main() {
                 ctx.restore();
             }
         }
+        
+        const score = get_score();
+        ctx.font = '48px sans-serif';
+        ctx.fillStyle = '#ddd';
+        ctx.strokeStyle = '#111';
+        ctx.textAlign = 'center';
+        ctx.lineWidth = 2;
+        ctx.fillText(score, canvas.width / 2, 50);
+        ctx.strokeText(score, canvas.width / 2, 50);
 
         /*
         for (let i = 0; i < weapon_states.curr_max; i += 1) {
