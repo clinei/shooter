@@ -256,3 +256,14 @@ async function main() {
 }
 
 Module.postRun.push(main);
+
+/*
+window.addEventListener('blur', onblur);
+function onblur(event) {
+    pause();
+}
+window.addEventListener('focus', onfocus);
+function onfocus(event) {
+    unpause();
+}
+*/

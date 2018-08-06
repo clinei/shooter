@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <assert.h>
 
 /*  BUGS
@@ -27,6 +28,8 @@
 * what about using a circular buffer for tables?
   that way we don't have to have a table->used or check it every iteration
   and we can have general functions for static and dynamic tables
+  actually, removing can always leave holes, so we have to copy to fill them,
+  which is more costly than just checking table->used
 
 * think about different weapon types
 
@@ -49,6 +52,8 @@
 #define PHYSICS_BALL_ITER_COUNT 3
 
 typedef unsigned int table_id_t;
+typedef unsigned char enemy_type_t;
+typedef unsigned char enemy_count_t;
 typedef unsigned int sprite_id_t;
 typedef float sprite_origin_t;
 typedef float sprite_size_t;
@@ -59,6 +64,7 @@ float randf() {
     return rand() / (float)RAND_MAX;
 }
 
+typedef unsigned int uint;
 typedef unsigned char bool;
 enum { false, true };
 
@@ -68,6 +74,11 @@ enum Sprites {
     SPRITE_ZOMBIE = 2,
     SPRITE_BULLET = 3
 };
+
+enum Enemy_Type {
+    ENEMY_PLAIN = 0
+};
+#define ENEMY_TYPE_COUNT 4
 
 struct timespec start_time;
 struct timespec curr_time;
@@ -91,7 +102,7 @@ float timespec_to_float(const struct timespec* spec) {
     // maybe return ms instead of seconds
     return (float)spec->tv_sec + (float)(spec->tv_nsec / 1000000) / 1000;
 }
-float difftime_float(const struct timespec* stop, const struct timespec* start) {
+float timespec_diff_float(const struct timespec* stop, const struct timespec* start) {
     struct timespec delta;
     timespec_diff(stop, start, &delta);
     return timespec_to_float(&delta);
@@ -100,12 +111,22 @@ float difftime_float(const struct timespec* stop, const struct timespec* start) 
 void begin_time() {
     clock_gettime(CLOCK_REALTIME, &start_time);
 }
+void stop_time() {
+    
+}
 float step_time() {
     clock_gettime(CLOCK_REALTIME, &curr_time);
     timespec_diff(&curr_time, &start_time, &curr_time);
-    const float delta = difftime_float(&curr_time, &prev_time);
+    const float delta = timespec_diff_float(&curr_time, &prev_time);
     prev_time = curr_time;
     return delta;
+}
+
+int screen_width, screen_height;
+EMSCRIPTEN_KEEPALIVE
+void set_screen_size(const int width, const int height) {
+    screen_width = width;
+    screen_height = height;
 }
 
 // table abstraction
@@ -451,16 +472,18 @@ struct AI_Enemy {
     bool* used;
     size_t curr_max;
     table_id_t* entity_id;
+    enemy_type_t* enemy_type;
 };
 struct AI_Enemy* ai_enemy;
 void alloc_ai_enemy(size_t max_count) {
     ai_enemy = malloc(sizeof(struct AI_Enemy));
     alloc_table(ai_enemy, max_count);
+    ai_enemy->enemy_type = malloc(max_count * sizeof(enemy_type_t));
 }
-table_id_t add_ai_enemy(table_id_t entity_id) {
+table_id_t add_ai_enemy(table_id_t entity_id, enemy_type_t enemy_type) {
     table_id_t index = add_table_item(ai_enemy, entity_id);
     if (index < ai_enemy->max_count) {
-        // empty for now
+        ai_enemy->enemy_type[index] = enemy_type;
     }
 
     return index;
@@ -573,7 +596,7 @@ table_id_t create_zombie(float x, float y) {
     add_physics_state(entity_id, x, y, 0.0, 0.0);
     add_physics_ball(entity_id, 15, 2);
     add_sprite_map(entity_id, SPRITE_ZOMBIE, -20, -20, 40, 0);
-    add_ai_enemy(entity_id);
+    add_ai_enemy(entity_id, ENEMY_PLAIN);
     add_health_item(entity_id, ZOMBIE_HEALTH, curr_time);
     add_proximity_attack(entity_id, 100, 10);
 
@@ -654,6 +677,122 @@ void step_weapon_states(float delta) {
 EMSCRIPTEN_KEEPALIVE
 struct Weapon_States* get_weapon_states() {
     return weapon_states;
+}
+
+struct Campaign {
+    size_t max_count;
+    size_t curr_max;
+    enemy_count_t* remaining;
+};
+struct Campaign* campaign;
+size_t curr_wave = 0;
+void alloc_campaign(size_t max_count) {
+    campaign = malloc(sizeof(struct Campaign));
+    campaign->remaining = malloc(max_count * ENEMY_TYPE_COUNT * sizeof(enemy_count_t));
+    campaign->curr_max = 0;
+    campaign->max_count = max_count;
+}
+void add_campaign_wave(enemy_count_t remaining[ENEMY_TYPE_COUNT]) {
+    for (size_t i = 0; i < ENEMY_TYPE_COUNT; i += 1) {
+        campaign->remaining[campaign->curr_max * ENEMY_TYPE_COUNT + i] = remaining[i];
+    }
+    // would use memcpy, but it copies to &campaign->remaining instead of the correct address
+    /*
+    memcpy(&campaign->remaining + campaign->curr_max * ENEMY_TYPE_COUNT * sizeof(enemy_count_t),
+           &remaining,
+           ENEMY_TYPE_COUNT * sizeof(enemy_count_t));
+    */
+
+    if (campaign->curr_max < campaign->max_count) {
+        campaign->curr_max += 1;
+    }
+}
+
+void start_wave();
+void end_wave();
+
+void generate_campaign_waves() {
+    enemy_count_t remaining[ENEMY_TYPE_COUNT];
+    for (size_t i = 0; i < ENEMY_TYPE_COUNT; i += 1) {
+        remaining[i] = 0;
+    }
+    for (size_t i = 0; i < 5; i += 1) {
+        remaining[0] = 1 + i * 3;
+        add_campaign_wave(remaining);
+    }
+}
+
+struct Wave_Completion {
+    enemy_count_t remaining[ENEMY_TYPE_COUNT];
+};
+struct Wave_Completion wave_completion;
+void step_wave_completion() {
+    for (size_t i = 0; i < ENEMY_TYPE_COUNT; i += 1) {
+        if (wave_completion.remaining[i] > 0) {
+            return;
+        }
+    }
+    end_wave();
+}
+
+struct Wave_Emitter {
+    float emit_interval;
+    struct timespec last_emit_at;
+    enemy_type_t last_emit_id;
+    enemy_count_t remaining[ENEMY_TYPE_COUNT];
+};
+struct Wave_Emitter wave_emitter;
+void step_wave_emitter() {
+    enemy_type_t emit_id = wave_emitter.last_emit_id + 1;
+    while (emit_id > wave_emitter.last_emit_id ||
+           emit_id < wave_emitter.last_emit_id) {
+
+        if (emit_id >= ENEMY_TYPE_COUNT) {
+            emit_id = 0;
+        }
+        if (wave_emitter.remaining[emit_id] > 0) {
+            break;
+        }
+        if (!(emit_id == 0 && wave_emitter.last_emit_id == 0)) {
+            emit_id += 1;
+        }
+    }
+    if (wave_emitter.remaining[emit_id] > 0 &&
+        timespec_diff_float(&curr_time, &wave_emitter.last_emit_at) > wave_emitter.emit_interval) {
+
+        float emit_x, emit_y;
+        if (randf() < 0.5) {
+            emit_x = 0;
+        }
+        else {
+            emit_x = screen_width;
+        }
+        emit_y = screen_height * randf();
+        create_zombie(emit_x, emit_y);
+
+        wave_emitter.remaining[emit_id] -= 1;
+        wave_emitter.last_emit_at = curr_time;
+        wave_emitter.last_emit_id = emit_id;
+    }
+}
+void start_wave() {
+    memcpy(&wave_completion.remaining,
+           &campaign->remaining[curr_wave * ENEMY_TYPE_COUNT],
+           ENEMY_TYPE_COUNT * sizeof(enemy_count_t));
+    memcpy(&wave_emitter.remaining,
+           &campaign->remaining[curr_wave * ENEMY_TYPE_COUNT],
+           ENEMY_TYPE_COUNT * sizeof(enemy_count_t));
+
+    wave_emitter.emit_interval = 1;
+    wave_emitter.last_emit_at = curr_time;
+    wave_emitter.last_emit_id = 0;
+}
+void end_wave() {
+    curr_wave += 1;
+
+    // @Incomplete
+    // should wait for a while
+    start_wave();
 }
 
 const char* str_window = "#window";
@@ -738,13 +877,6 @@ EM_BOOL mouseup(int event_type, const struct EmscriptenMouseEvent* event, void* 
     return consumed;
 }
 
-int screen_width, screen_height;
-EMSCRIPTEN_KEEPALIVE
-void set_screen_size(const int width, const int height) {
-    screen_width = width;
-    screen_height = height;
-}
-
 EMSCRIPTEN_KEEPALIVE
 void init(const int width, const int height) {
     set_screen_size(width, height);
@@ -763,6 +895,8 @@ void init(const int width, const int height) {
     alloc_health_table(MAX_ENTITY_COUNT);
 
     alloc_weapon_states(8);
+    alloc_campaign(20);
+    generate_campaign_waves();
 
     input_state = malloc(sizeof(struct Input_State));
 
@@ -774,6 +908,9 @@ void init(const int width, const int height) {
 
     create_player(screen_width / 2.0, screen_height / 2.0);
 
+    start_wave();
+
+    /*
     // create some enemies for us to fight
     // in grid formation
     const int padding = 60;
@@ -786,6 +923,7 @@ void init(const int width, const int height) {
             create_zombie(x, y);
         }
     }
+    */
 }
 
 void step_player(float delta) {
@@ -840,7 +978,7 @@ void step_bullets(float delta) {
         if (bullets->used[i]) {
             const table_id_t entity_id = bullets->entity_id[i];
             const struct timespec created_at = bullets->created_at[i];
-            if (difftime_float(&curr_time, &created_at) > BULLET_LIFETIME) {
+            if (timespec_diff_float(&curr_time, &created_at) > BULLET_LIFETIME) {
                 destroy_bullet(entity_id);
                 break;
             }
@@ -1010,10 +1148,12 @@ void step_ai_enemy(float delta) {
         for (table_id_t i = 0; i < ai_enemy->curr_max; i += 1) {
             if (ai_enemy->used[i]) {
                 const table_id_t entity_id = ai_enemy->entity_id[i];
+                const enemy_type_t enemy_type = ai_enemy->enemy_type[i];
                 const table_id_t health_id = find_item_index(health_table, entity_id);
                 const float health_points = health_table->health_points[health_id];
                 if (health_points < 0.1) {
                     destroy_zombie(entity_id);
+                    wave_completion.remaining[enemy_type] -= 1;
                     break;
                 }
                 const table_id_t physics_id = find_item_index(physics_states, entity_id);
@@ -1027,6 +1167,8 @@ void step_ai_enemy(float delta) {
                 physics_states->x_speed[physics_id] = -player_dir_x * ZOMBIE_SPEED;
                 physics_states->y_speed[physics_id] = -player_dir_y * ZOMBIE_SPEED;
                 physics_states->angle[physics_id] = player_angle;
+
+                // keep away from other enemies
                 for (table_id_t j = 0; j < ai_enemy->curr_max; j += 1) {
                     if (j != i && ai_enemy->used[j]) {
                         const table_id_t j_entity_id = ai_enemy->entity_id[j];
@@ -1098,6 +1240,8 @@ void step() {
     step_player(delta);
     step_ai_enemy(delta);
     step_bullets(delta);
+    step_wave_completion();
+    step_wave_emitter();
 }
 
 
