@@ -719,9 +719,6 @@ void alloc_weapon_states(size_t max_count) {
     for (table_id_t i = 0; i < max_count; i += 1) {
         weapon_states->firing_state[i] = 1;
     }
-    for (table_id_t i = 0; i < max_count; i += 1) {
-        weapon_states->firing_speed[i] = 1;
-    }
     weapon_states->firing_speed = malloc(max_count * sizeof(float));
     weapon_states->firing_speed[0] = FIRING_SPEED;
     weapon_states->max_count = max_count;
