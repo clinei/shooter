@@ -22,7 +22,7 @@ If you have the Emscripten SDK, you can build by running
 
 If you don't have the Emscripten SDK, you need to install it.
 
-From (https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html)[the official docs]:
+From [the official docs](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html):
 ```bash
 # run these commands in a shell
 # in the folder where you keep your code / git clones
