@@ -22,15 +22,35 @@
 
 /*  TASKS
 
-* add more weapon types
-
-* add more enemy types
-
-* ammo pickups
+* add wave start announcement text
 
 * make a separate game clock
   and set and restore it when the player exits and enters the window
   so we can pause and unpause
+
+* add a weapon that uses moving lines for bullet hit logic
+  and graphics
+
+* add more weapon types:
+  + fast firing uzi, 15 bullets before reload
+  + slow rocket, with homing upgrade and fire particles
+  + sniper rifle
+
+* add more enemy types:
+  + fast zombie
+  + slow, poison trail zombie
+  + strong, lot of health boss zombie
+
+* add ammo pickups
+
+* add weapon graphics
+
+* add weapon switching and HUD
+
+* add player HUD
+
+* add weapon buy and upgrade logic,
+  and the GUI screen (needs pausing)
 
 */
 
@@ -41,7 +61,7 @@
   in their own table (simple 2D movement, graphics,
   ball collision, hit feedback, bullet damage),
   and objects are defined by what tables they are in.
-  (See `init`)
+  (See `init` and `step`)
 
 * When an object gets created, it gets added to
   specific tables. When an object is destroyed,
