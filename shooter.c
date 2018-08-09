@@ -41,12 +41,15 @@
   in their own table (simple 2D movement, graphics,
   ball collision, hit feedback, bullet damage),
   and objects are defined by what tables they are in.
+  (See `init`)
 
 * When an object gets created, it gets added to
   specific tables. When an object is destroyed,
-  it is removed from those tables. Between those times,
-  it can be added and removed from tables to change its behavior
-  as needed. This essentially means there are no classes.
+  it is removed from those tables.
+  (See `create_bullet` and `destroy_bullet`)
+
+* Between those times, it can be added and removed from tables
+  to change its behavior. This essentially means there are no classes.
   It is very much like the Component-Entity-System pattern,
   except the System is implicit, giving us more flexibility.
 
@@ -56,11 +59,13 @@
 * The tables are iterated separately, making the loops tight and fast.
   If a loop gets too slow, it can be broken up into parts
   that use each other's cached results.
+  (See `step_bullets` and `step_physics`)
 
 * Cross-cutting concerns are handled by joining tables,
   for example by finding the index of an object in another table.
   Tables can modify other tables, either directly or
   by constructing a new table.
+  (See `step_physics_balls`, `step_ai_enemy` and `add_collision_item`)
 
 */
 
