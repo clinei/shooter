@@ -34,6 +34,47 @@
 
 */
 
+/* DESIGN
+
+* This codebase uses data-oriented design,
+  which means that concerns are kept separate,
+  in their own table (simple 2D movement, graphics,
+  ball collision, hit feedback, bullet damage),
+  and objects are defined by what tables they are in.
+
+* When an object gets created, it gets added to
+  specific tables. When an object is destroyed,
+  it is removed from those tables. Between those times,
+  it can be added and removed from tables to change its behavior
+  as needed. This essentially means there are no classes.
+  It is very much like the Component-Entity-System pattern,
+  except the System is implicit, giving us more flexibility.
+
+  More on that at
+  http://www.dataorienteddesign.com/dodmain/node1.html
+
+* The tables are iterated separately, making the loops tight and fast.
+  If a loop gets too slow, it can be broken up into parts
+  that use each other's cached results.
+
+* Cross-cutting concerns are handled by joining tables,
+  for example by finding the index of an object in another table.
+  Tables can modify other tables, either directly or
+  by constructing a new table.
+
+*/
+
+/* DEBUGGING
+
+* Using simple printf and if statements works for most cases,
+  you just need to know what data to print.
+
+* I haven't found a good way to set breakpoints yet, but
+  http://webassemblycode.com/using-browsers-debug-webassembly/
+  has some ideas.
+
+*/
+
 #define PLAYER_SPEED 200
 #define ZOMBIE_SPEED 100
 #define BULLET_SPEED 2000
