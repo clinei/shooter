@@ -33,4 +33,6 @@ cd emsdk
 ./emsdk install latest
 ./emsdk activate latest
 # close the shell and reopen in the project folder
+# you should now be able to build
+# and run the emcc and emrun commands
 ```
