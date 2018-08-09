@@ -10,6 +10,10 @@
 
 /*  BUGS
 
+* player gets hurt at start
+
+* first enemy doesn't attack
+
 * search for "WRONG"
 
 * search for "trap"
@@ -18,20 +22,15 @@
 
 /*  TASKS
 
-* make a separate game clock
-  and make everything run in a web worker
-  so we can pause and continue
-  actually, we can just listen for the window blur event
+* add more weapon types
+
+* add more enemy types
 
 * ammo pickups
 
-* what about using a circular buffer for tables?
-  that way we don't have to have a table->used or check it every iteration
-  and we can have general functions for static and dynamic tables
-  actually, removing can always leave holes, so we have to copy to fill them,
-  which is more costly than just checking table->used
-
-* think about different weapon types
+* make a separate game clock
+  and set and restore it when the player exits and enters the window
+  so we can pause and unpause
 
 */
 
