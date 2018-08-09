@@ -16,7 +16,7 @@ Your browser should open automatically.
 
 If you have the Emscripten SDK, you can build by running
 
-```
+```bash
 # on Windows
 ./build.ps1
 
