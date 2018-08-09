@@ -1074,9 +1074,8 @@ void step_physics_balls(float delta) {
                             const float j_radius = physics_balls->radius[j];
                             const float j_mass = physics_balls->mass[j];
 
-                            const float dx = (x - j_x);
-                            const float dy = (y - j_y);
-                            const float distance = sqrt(dx*dx + dy*dy);
+                            float dx, dy, distance;
+                            get_distance_to_point(x, y, j_x, j_y, &dx, &dy, &distance);
 
                             if (distance < radius + j_radius) {
                                     
@@ -1103,28 +1102,10 @@ void step_physics_balls(float delta) {
                                 const float power = (radius + j_radius - distance);
                                 float push_x = (mid_x + dir_x * radius) * power;
                                 float push_y = (mid_y + dir_y * radius) * power;
-                                if (isnan(push_x)) {
-                                    push_x = 0;
-                                }
-                                if (isnan(push_y)) {
-                                    push_y = 0;
-                                }
-                                if (push_x > 500) {
-                                    push_x = 500;
-                                }
-                                else if (push_x < -500) {
-                                    push_x = -500;
-                                }
-                                if (push_y > 500) {
-                                    push_y = 500;
-                                }
-                                else if (push_y < -500) {
-                                    push_y = -500;
-                                }
-                                physics_states->x_speed[physics_id] += push_x / mass;
-                                physics_states->y_speed[physics_id] += push_y / mass;
-                                physics_states->x_speed[j_physics_id] -= push_x / j_mass;
-                                physics_states->y_speed[j_physics_id] -= push_y / j_mass;
+                                physics_states->x_speed[physics_id] -= push_x / mass;
+                                physics_states->y_speed[physics_id] -= push_y / mass;
+                                physics_states->x_speed[j_physics_id] += push_x / j_mass;
+                                physics_states->y_speed[j_physics_id] += push_y / j_mass;
                                 add_collision_item(entity_id, j_entity_id);
                             }
                         }
