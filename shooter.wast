@@ -63,7 +63,7 @@
  (global $tempFloat (mut f32) (f32.const 0))
  (global $f0 (mut f32) (f32.const 0))
  (elem (get_global $tableBase) $b0 $jsCall_ii_0 $___stdio_close $b0 $b1 $jsCall_iiii_0 $b1 $___stdout_write $___stdio_seek $_keydown $_keyup $_mousemove $_mousedown $_mouseup $___stdio_write $b1 $b1 $b1 $b1 $b1)
- (data (i32.const 1024) "O\bba\05g\ac\dd?\18-DT\fb!\e9?\9b\f6\81\d2\0bs\ef?\18-DT\fb!\f9?\e2e/\"\7f+z<\07\\\143&\a6\81<\bd\cb\f0z\88\07p<\07\\\143&\a6\91<D\04\00\00\05\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\03\00\00\00\04\00\00\00\14\12\00\00\00\04\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\n\ff\ff\ff\ff\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00D\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\dc\11\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00before\n\00#window\00\11\00\n\00\11\11\11\00\00\00\00\05\00\00\00\00\00\00\t\00\00\00\00\0b\00\00\00\00\00\00\00\00\11\00\0f\n\11\11\11\03\n\07\00\01\13\t\0b\0b\00\00\t\06\0b\00\00\0b\00\06\11\00\00\00\11\11\11\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0b\00\00\00\00\00\00\00\00\11\00\n\n\11\11\11\00\n\00\00\02\00\t\0b\00\00\00\t\00\0b\00\00\0b\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\0c\00\00\00\00\t\0c\00\00\00\00\00\0c\00\00\0c\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0e\00\00\00\00\00\00\00\00\00\00\00\0d\00\00\00\04\0d\00\00\00\00\t\0e\00\00\00\00\00\0e\00\00\0e\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\10\00\00\00\00\00\00\00\00\00\00\00\0f\00\00\00\00\0f\00\00\00\00\t\10\00\00\00\00\00\10\00\00\10\00\00\12\00\00\00\12\12\12\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\12\00\00\00\12\12\12\00\00\00\00\00\00\t\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0b\00\00\00\00\00\00\00\00\00\00\00\n\00\00\00\00\n\00\00\00\00\t\0b\00\00\00\00\00\0b\00\00\0b\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\0c\00\00\00\00\t\0c\00\00\00\00\00\0c\00\00\0c\00\00-+   0X0x\00(null)\00-0X+0X 0X-0x+0x 0x\00inf\00INF\00nan\00NAN\000123456789ABCDEF.\00T!\"\19\0d\01\02\03\11K\1c\0c\10\04\0b\1d\12\1e\'hnopqb \05\06\0f\13\14\15\1a\08\16\07($\17\18\t\n\0e\1b\1f%#\83\82}&*+<=>?CGJMXYZ[\\]^_`acdefgijklrstyz{|\00Illegal byte sequence\00Domain error\00Result not representable\00Not a tty\00Permission denied\00Operation not permitted\00No such file or directory\00No such process\00File exists\00Value too large for data type\00No space left on device\00Out of memory\00Resource busy\00Interrupted system call\00Resource temporarily unavailable\00Invalid seek\00Cross-device link\00Read-only file system\00Directory not empty\00Connection reset by peer\00Operation timed out\00Connection refused\00Host is down\00Host is unreachable\00Address in use\00Broken pipe\00I/O error\00No such device or address\00Block device required\00No such device\00Not a directory\00Is a directory\00Text file busy\00Exec format error\00Invalid argument\00Argument list too long\00Symbolic link loop\00Filename too long\00Too many open files in system\00No file descriptors available\00Bad file descriptor\00No child process\00Bad address\00File too large\00Too many links\00No locks available\00Resource deadlock would occur\00State not recoverable\00Previous owner died\00Operation canceled\00Function not implemented\00No message of desired type\00Identifier removed\00Device not a stream\00No data available\00Device timeout\00Out of streams resources\00Link has been severed\00Protocol error\00Bad message\00File descriptor in bad state\00Not a socket\00Destination address required\00Message too large\00Protocol wrong type for socket\00Protocol not available\00Protocol not supported\00Socket type not supported\00Not supported\00Protocol family not supported\00Address family not supported by protocol\00Address not available\00Network is down\00Network unreachable\00Connection reset by network\00Connection aborted\00No buffer space available\00Socket is connected\00Socket not connected\00Cannot send after socket shutdown\00Operation already in progress\00Operation in progress\00Stale file handle\00Remote I/O error\00Quota exceeded\00No medium found\00Wrong medium type\00No error information")
+ (data (i32.const 1024) "O\bba\05g\ac\dd?\18-DT\fb!\e9?\9b\f6\81\d2\0bs\ef?\18-DT\fb!\f9?\e2e/\"\7f+z<\07\\\143&\a6\81<\bd\cb\f0z\88\07p<\07\\\143&\a6\91<D\04\00\00\05\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\03\00\00\00\04\00\00\00\14\12\00\00\00\04\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\n\ff\ff\ff\ff\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00D\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\dc\11\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00#window\00%u, %f\n\00\11\00\n\00\11\11\11\00\00\00\00\05\00\00\00\00\00\00\t\00\00\00\00\0b\00\00\00\00\00\00\00\00\11\00\0f\n\11\11\11\03\n\07\00\01\13\t\0b\0b\00\00\t\06\0b\00\00\0b\00\06\11\00\00\00\11\11\11\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0b\00\00\00\00\00\00\00\00\11\00\n\n\11\11\11\00\n\00\00\02\00\t\0b\00\00\00\t\00\0b\00\00\0b\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\0c\00\00\00\00\t\0c\00\00\00\00\00\0c\00\00\0c\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0e\00\00\00\00\00\00\00\00\00\00\00\0d\00\00\00\04\0d\00\00\00\00\t\0e\00\00\00\00\00\0e\00\00\0e\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\10\00\00\00\00\00\00\00\00\00\00\00\0f\00\00\00\00\0f\00\00\00\00\t\10\00\00\00\00\00\10\00\00\10\00\00\12\00\00\00\12\12\12\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\12\00\00\00\12\12\12\00\00\00\00\00\00\t\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0b\00\00\00\00\00\00\00\00\00\00\00\n\00\00\00\00\n\00\00\00\00\t\0b\00\00\00\00\00\0b\00\00\0b\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\00\00\00\00\00\00\00\0c\00\00\00\00\0c\00\00\00\00\t\0c\00\00\00\00\00\0c\00\00\0c\00\00-+   0X0x\00(null)\00-0X+0X 0X-0x+0x 0x\00inf\00INF\00nan\00NAN\000123456789ABCDEF.\00T!\"\19\0d\01\02\03\11K\1c\0c\10\04\0b\1d\12\1e\'hnopqb \05\06\0f\13\14\15\1a\08\16\07($\17\18\t\n\0e\1b\1f%#\83\82}&*+<=>?CGJMXYZ[\\]^_`acdefgijklrstyz{|\00Illegal byte sequence\00Domain error\00Result not representable\00Not a tty\00Permission denied\00Operation not permitted\00No such file or directory\00No such process\00File exists\00Value too large for data type\00No space left on device\00Out of memory\00Resource busy\00Interrupted system call\00Resource temporarily unavailable\00Invalid seek\00Cross-device link\00Read-only file system\00Directory not empty\00Connection reset by peer\00Operation timed out\00Connection refused\00Host is down\00Host is unreachable\00Address in use\00Broken pipe\00I/O error\00No such device or address\00Block device required\00No such device\00Not a directory\00Is a directory\00Text file busy\00Exec format error\00Invalid argument\00Argument list too long\00Symbolic link loop\00Filename too long\00Too many open files in system\00No file descriptors available\00Bad file descriptor\00No child process\00Bad address\00File too large\00Too many links\00No locks available\00Resource deadlock would occur\00State not recoverable\00Previous owner died\00Operation canceled\00Function not implemented\00No message of desired type\00Identifier removed\00Device not a stream\00No data available\00Device timeout\00Out of streams resources\00Link has been severed\00Protocol error\00Bad message\00File descriptor in bad state\00Not a socket\00Destination address required\00Message too large\00Protocol wrong type for socket\00Protocol not available\00Protocol not supported\00Socket type not supported\00Not supported\00Protocol family not supported\00Address family not supported by protocol\00Address not available\00Network is down\00Network unreachable\00Connection reset by network\00Connection aborted\00No buffer space available\00Socket is connected\00Socket not connected\00Cannot send after socket shutdown\00Operation already in progress\00Operation in progress\00Stale file handle\00Remote I/O error\00Quota exceeded\00No medium found\00Wrong medium type\00No error information")
  (export "___errno_location" (func $___errno_location))
  (export "_fflush" (func $_fflush))
  (export "_find_item_index" (func $_find_item_index))
@@ -7149,13 +7149,14 @@
   (local $$29 i32)
   (local $$3 i32)
   (local $$30 i32)
+  (local $$31 i32)
+  (local $$32 i32)
   (local $$4 i32)
   (local $$5 i32)
   (local $$6 i32)
   (local $$7 i32)
   (local $$8 i32)
   (local $$9 i32)
-  (local $$vararg_buffer i32)
   (local $label i32)
   (local $sp i32)
   (set_local $sp
@@ -7175,9 +7176,6 @@
    (call $abortStackOverflow
     (i32.const 16)
    )
-  )
-  (set_local $$vararg_buffer
-   (get_local $sp)
   )
   (set_local $$1
    (get_local $$0)
@@ -7222,164 +7220,169 @@
    (get_local $$8)
    (get_local $$6)
   )
-  ;;@ shooter.c:716:0
-  (drop
-   (call $_printf
-    (i32.const 1464)
-    (get_local $$vararg_buffer)
+  ;;@ shooter.c:714:0
+  (set_local $$9
+   (get_local $$1)
+  )
+  (set_local $$10
+   (i32.shl
+    (get_local $$9)
+    (i32.const 2)
    )
   )
-  ;;@ shooter.c:717:0
+  (set_local $$11
+   (call $_malloc
+    (get_local $$10)
+   )
+  )
+  (set_local $$12
+   (i32.load
+    (i32.const 3992)
+   )
+  )
+  (set_local $$13
+   (i32.add
+    (get_local $$12)
+    (i32.const 12)
+   )
+  )
+  (i32.store
+   (get_local $$13)
+   (get_local $$11)
+  )
+  ;;@ shooter.c:718:0
   (set_local $$2
    (i32.const 0)
   )
   (loop $while-in
    (block $while-out
-    (set_local $$9
+    (set_local $$14
      (get_local $$2)
     )
-    (set_local $$10
+    (set_local $$15
      (get_local $$1)
     )
-    (set_local $$11
+    (set_local $$16
      (i32.lt_u
-      (get_local $$9)
-      (get_local $$10)
+      (get_local $$14)
+      (get_local $$15)
      )
     )
     (if
      (i32.eqz
-      (get_local $$11)
+      (get_local $$16)
      )
      (br $while-out)
     )
-    ;;@ shooter.c:718:0
-    (set_local $$12
+    ;;@ shooter.c:719:0
+    (set_local $$17
      (i32.load
       (i32.const 3992)
      )
     )
-    (set_local $$13
+    (set_local $$18
      (i32.add
-      (get_local $$12)
+      (get_local $$17)
       (i32.const 8)
      )
     )
-    (set_local $$14
+    (set_local $$19
      (i32.load
-      (get_local $$13)
+      (get_local $$18)
      )
     )
-    (set_local $$15
+    (set_local $$20
      (get_local $$2)
     )
-    (set_local $$16
+    (set_local $$21
      (i32.add
-      (get_local $$14)
+      (get_local $$19)
       (i32.shl
-       (get_local $$15)
+       (get_local $$20)
        (i32.const 2)
       )
      )
     )
     (f32.store
-     (get_local $$16)
+     (get_local $$21)
      (f32.const 1)
     )
-    ;;@ shooter.c:717:0
-    (set_local $$17
+    ;;@ shooter.c:720:0
+    (set_local $$22
+     (i32.load
+      (i32.const 3992)
+     )
+    )
+    (set_local $$23
+     (i32.add
+      (get_local $$22)
+      (i32.const 12)
+     )
+    )
+    (set_local $$24
+     (i32.load
+      (get_local $$23)
+     )
+    )
+    (set_local $$25
      (get_local $$2)
     )
-    (set_local $$18
+    (set_local $$26
      (i32.add
-      (get_local $$17)
+      (get_local $$24)
+      (i32.shl
+       (get_local $$25)
+       (i32.const 2)
+      )
+     )
+    )
+    (f32.store
+     (get_local $$26)
+     (f32.const 200)
+    )
+    ;;@ shooter.c:718:0
+    (set_local $$27
+     (get_local $$2)
+    )
+    (set_local $$28
+     (i32.add
+      (get_local $$27)
       (i32.const 1)
      )
     )
     (set_local $$2
-     (get_local $$18)
+     (get_local $$28)
     )
     (br $while-in)
    )
   )
-  ;;@ shooter.c:720:0
-  (set_local $$19
-   (get_local $$1)
-  )
-  (set_local $$20
-   (i32.shl
-    (get_local $$19)
-    (i32.const 2)
-   )
-  )
-  (set_local $$21
-   (call $_malloc
-    (get_local $$20)
-   )
-  )
-  (set_local $$22
-   (i32.load
-    (i32.const 3992)
-   )
-  )
-  (set_local $$23
-   (i32.add
-    (get_local $$22)
-    (i32.const 12)
-   )
-  )
-  (i32.store
-   (get_local $$23)
-   (get_local $$21)
-  )
-  ;;@ shooter.c:721:0
-  (set_local $$24
-   (i32.load
-    (i32.const 3992)
-   )
-  )
-  (set_local $$25
-   (i32.add
-    (get_local $$24)
-    (i32.const 12)
-   )
-  )
-  (set_local $$26
-   (i32.load
-    (get_local $$25)
-   )
-  )
-  (f32.store
-   (get_local $$26)
-   (f32.const 200)
-  )
   ;;@ shooter.c:722:0
-  (set_local $$27
-   (get_local $$1)
-  )
-  (set_local $$28
-   (i32.load
-    (i32.const 3992)
-   )
-  )
-  (i32.store
-   (get_local $$28)
-   (get_local $$27)
-  )
-  ;;@ shooter.c:723:0
   (set_local $$29
-   (i32.load
-    (i32.const 3992)
-   )
+   (get_local $$1)
   )
   (set_local $$30
-   (i32.add
-    (get_local $$29)
-    (i32.const 4)
+   (i32.load
+    (i32.const 3992)
    )
   )
   (i32.store
    (get_local $$30)
+   (get_local $$29)
+  )
+  ;;@ shooter.c:723:0
+  (set_local $$31
+   (i32.load
+    (i32.const 3992)
+   )
+  )
+  (set_local $$32
+   (i32.add
+    (get_local $$31)
+    (i32.const 4)
+   )
+  )
+  (i32.store
+   (get_local $$32)
    (i32.const 1)
   )
   (set_global $STACKTOP
@@ -7414,6 +7417,9 @@
   (local $$3 i32)
   (local $$30 i32)
   (local $$31 i32)
+  (local $$32 i32)
+  (local $$33 i32)
+  (local $$34 i32)
   (local $$4 i32)
   (local $$5 i32)
   (local $$6 i32)
@@ -7612,24 +7618,41 @@
         (i32.const 8)
        )
       )
-      (i32.store
-       (get_local $$29)
-       (i32.const 0)
+      (set_local $$30
+       (i32.load
+        (get_local $$29)
+       )
+      )
+      (set_local $$31
+       (get_local $$2)
+      )
+      (set_local $$32
+       (i32.add
+        (get_local $$30)
+        (i32.shl
+         (get_local $$31)
+         (i32.const 2)
+        )
+       )
+      )
+      (f32.store
+       (get_local $$32)
+       (f32.const 0)
       )
      )
     )
     ;;@ shooter.c:727:0
-    (set_local $$30
+    (set_local $$33
      (get_local $$2)
     )
-    (set_local $$31
+    (set_local $$34
      (i32.add
-      (get_local $$30)
+      (get_local $$33)
       (i32.const 1)
      )
     )
     (set_local $$2
-     (get_local $$31)
+     (get_local $$34)
     )
     (br $while-in)
    )
@@ -10208,7 +10231,7 @@
   ;;@ shooter.c:994:0
   (drop
    (call $_emscripten_set_keydown_callback
-    (i32.const 1472)
+    (i32.const 1464)
     (i32.const 0)
     (i32.const 0)
     (i32.const 5)
@@ -10217,7 +10240,7 @@
   ;;@ shooter.c:995:0
   (drop
    (call $_emscripten_set_keyup_callback
-    (i32.const 1472)
+    (i32.const 1464)
     (i32.const 0)
     (i32.const 0)
     (i32.const 6)
@@ -10226,7 +10249,7 @@
   ;;@ shooter.c:996:0
   (drop
    (call $_emscripten_set_mousemove_callback
-    (i32.const 1472)
+    (i32.const 1464)
     (i32.const 0)
     (i32.const 0)
     (i32.const 7)
@@ -10235,7 +10258,7 @@
   ;;@ shooter.c:997:0
   (drop
    (call $_emscripten_set_mousedown_callback
-    (i32.const 1472)
+    (i32.const 1464)
     (i32.const 0)
     (i32.const 0)
     (i32.const 8)
@@ -10244,7 +10267,7 @@
   ;;@ shooter.c:998:0
   (drop
    (call $_emscripten_set_mouseup_callback
-    (i32.const 1472)
+    (i32.const 1464)
     (i32.const 0)
     (i32.const 0)
     (i32.const 9)
@@ -10327,8 +10350,13 @@
  (func $_step_player (; 103 ;) (param $$0 f32)
   (local $$1 f32)
   (local $$10 i32)
-  (local $$100 i32)
-  (local $$101 i32)
+  (local $$100 f32)
+  (local $$101 f32)
+  (local $$102 f32)
+  (local $$103 f32)
+  (local $$104 i32)
+  (local $$105 i32)
+  (local $$106 i32)
   (local $$11 i32)
   (local $$12 i32)
   (local $$13 i32)
@@ -10397,20 +10425,20 @@
   (local $$70 i32)
   (local $$71 i32)
   (local $$72 i32)
-  (local $$73 i32)
-  (local $$74 i32)
+  (local $$73 f32)
+  (local $$74 f64)
   (local $$75 i32)
   (local $$76 i32)
   (local $$77 i32)
-  (local $$78 f32)
-  (local $$79 f64)
+  (local $$78 i32)
+  (local $$79 i32)
   (local $$8 i32)
   (local $$80 i32)
-  (local $$81 f32)
-  (local $$82 f32)
+  (local $$81 i32)
+  (local $$82 i32)
   (local $$83 f32)
-  (local $$84 f32)
-  (local $$85 f32)
+  (local $$84 f64)
+  (local $$85 i32)
   (local $$86 f32)
   (local $$87 f32)
   (local $$88 f32)
@@ -10425,7 +10453,9 @@
   (local $$96 f32)
   (local $$97 f32)
   (local $$98 f32)
-  (local $$99 i32)
+  (local $$99 f32)
+  (local $$vararg_buffer i32)
+  (local $$vararg_ptr1 i32)
   (local $label i32)
   (local $sp i32)
   (set_local $sp
@@ -10434,7 +10464,7 @@
   (set_global $STACKTOP
    (i32.add
     (get_global $STACKTOP)
-    (i32.const 48)
+    (i32.const 64)
    )
   )
   (if
@@ -10443,35 +10473,41 @@
     (get_global $STACK_MAX)
    )
    (call $abortStackOverflow
-    (i32.const 48)
+    (i32.const 64)
    )
+  )
+  (set_local $$vararg_buffer
+   (get_local $sp)
   )
   (set_local $$6
    (i32.add
     (get_local $sp)
-    (i32.const 16)
+    (i32.const 32)
    )
   )
   (set_local $$7
    (i32.add
     (get_local $sp)
-    (i32.const 12)
+    (i32.const 28)
    )
   )
   (set_local $$8
    (i32.add
     (get_local $sp)
-    (i32.const 8)
+    (i32.const 24)
    )
   )
   (set_local $$9
    (i32.add
     (get_local $sp)
-    (i32.const 4)
+    (i32.const 20)
    )
   )
   (set_local $$10
-   (get_local $sp)
+   (i32.add
+    (get_local $sp)
+    (i32.const 16)
+   )
   )
   (set_local $$1
    (get_local $$0)
@@ -10510,7 +10546,7 @@
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1056:0
+    ;;@ shooter.c:1057:0
     (return)
    )
   )
@@ -10926,161 +10962,182 @@
   ;;@ shooter.c:1046:0
   (set_local $$70
    (i32.load
-    (i32.const 4028)
+    (i32.const 3992)
    )
   )
   (set_local $$71
    (i32.add
     (get_local $$70)
-    (i32.const 4)
+    (i32.const 8)
    )
   )
   (set_local $$72
-   (i32.load8_s
+   (i32.load
     (get_local $$71)
    )
   )
   (set_local $$73
-   (i32.and
+   (f32.load
     (get_local $$72)
-    (i32.const 255)
    )
   )
   (set_local $$74
-   (i32.ne
+   (f64.promote/f32
     (get_local $$73)
-    (i32.const 0)
    )
   )
-  (if
-   (i32.eqz
-    (get_local $$74)
+  (i32.store
+   (get_local $$vararg_buffer)
+   (i32.const 0)
+  )
+  (set_local $$vararg_ptr1
+   (i32.add
+    (get_local $$vararg_buffer)
+    (i32.const 8)
    )
-   (block
-    (set_global $STACKTOP
-     (get_local $sp)
-    )
-    ;;@ shooter.c:1056:0
-    (return)
+  )
+  (f64.store
+   (get_local $$vararg_ptr1)
+   (get_local $$74)
+  )
+  (drop
+   (call $_printf
+    (i32.const 1472)
+    (get_local $$vararg_buffer)
    )
   )
   ;;@ shooter.c:1047:0
   (set_local $$75
    (i32.load
-    (i32.const 3992)
+    (i32.const 4028)
    )
   )
   (set_local $$76
    (i32.add
     (get_local $$75)
-    (i32.const 8)
+    (i32.const 4)
    )
   )
   (set_local $$77
-   (i32.load
+   (i32.load8_s
     (get_local $$76)
    )
   )
   (set_local $$78
-   (f32.load
+   (i32.and
     (get_local $$77)
+    (i32.const 255)
    )
   )
   (set_local $$79
-   (f64.promote/f32
+   (i32.ne
     (get_local $$78)
-   )
-  )
-  (set_local $$80
-   (f64.lt
-    (get_local $$79)
-    (f64.const 0.01)
+    (i32.const 0)
    )
   )
   (if
    (i32.eqz
-    (get_local $$80)
+    (get_local $$79)
    )
    (block
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1056:0
+    ;;@ shooter.c:1057:0
     (return)
    )
   )
-  ;;@ shooter.c:1049:0
+  ;;@ shooter.c:1048:0
+  (set_local $$80
+   (i32.load
+    (i32.const 3992)
+   )
+  )
   (set_local $$81
-   (get_local $$2)
+   (i32.add
+    (get_local $$80)
+    (i32.const 8)
+   )
   )
   (set_local $$82
+   (i32.load
+    (get_local $$81)
+   )
+  )
+  (set_local $$83
+   (f32.load
+    (get_local $$82)
+   )
+  )
+  (set_local $$84
+   (f64.promote/f32
+    (get_local $$83)
+   )
+  )
+  (set_local $$85
+   (f64.lt
+    (get_local $$84)
+    (f64.const 0.01)
+   )
+  )
+  (if
+   (i32.eqz
+    (get_local $$85)
+   )
+   (block
+    (set_global $STACKTOP
+     (get_local $sp)
+    )
+    ;;@ shooter.c:1057:0
+    (return)
+   )
+  )
+  ;;@ shooter.c:1050:0
+  (set_local $$86
+   (get_local $$2)
+  )
+  (set_local $$87
    (f32.load
     (get_local $$9)
    )
   )
-  (set_local $$83
+  (set_local $$88
    (f32.mul
-    (get_local $$82)
+    (get_local $$87)
     (f32.const 40)
    )
   )
-  (set_local $$84
+  (set_local $$89
    (f32.sub
-    (get_local $$81)
-    (get_local $$83)
+    (get_local $$86)
+    (get_local $$88)
    )
   )
-  ;;@ shooter.c:1050:0
-  (set_local $$85
+  ;;@ shooter.c:1051:0
+  (set_local $$90
    (get_local $$3)
   )
-  (set_local $$86
+  (set_local $$91
    (f32.load
     (get_local $$10)
    )
   )
-  (set_local $$87
+  (set_local $$92
    (f32.mul
-    (get_local $$86)
+    (get_local $$91)
     (f32.const 40)
    )
   )
-  (set_local $$88
-   (f32.sub
-    (get_local $$85)
-    (get_local $$87)
-   )
-  )
-  ;;@ shooter.c:1051:0
-  (set_local $$89
-   (f32.load
-    (get_local $$9)
-   )
-  )
-  (set_local $$90
-   (f32.neg
-    (get_local $$89)
-   )
-  )
-  (set_local $$91
-   (f32.mul
-    (get_local $$90)
-    (f32.const 2e3)
-   )
-  )
-  (set_local $$92
-   (get_local $$4)
-  )
   (set_local $$93
-   (f32.add
-    (get_local $$91)
+   (f32.sub
+    (get_local $$90)
     (get_local $$92)
    )
   )
   ;;@ shooter.c:1052:0
   (set_local $$94
    (f32.load
-    (get_local $$10)
+    (get_local $$9)
    )
   )
   (set_local $$95
@@ -11095,7 +11152,7 @@
    )
   )
   (set_local $$97
-   (get_local $$5)
+   (get_local $$4)
   )
   (set_local $$98
    (f32.add
@@ -11103,40 +11160,66 @@
     (get_local $$97)
    )
   )
-  ;;@ shooter.c:1049:0
-  (drop
-   (call $_create_bullet
-    (get_local $$84)
-    (get_local $$88)
-    (get_local $$93)
-    (get_local $$98)
+  ;;@ shooter.c:1053:0
+  (set_local $$99
+   (f32.load
+    (get_local $$10)
    )
   )
-  ;;@ shooter.c:1054:0
-  (set_local $$99
+  (set_local $$100
+   (f32.neg
+    (get_local $$99)
+   )
+  )
+  (set_local $$101
+   (f32.mul
+    (get_local $$100)
+    (f32.const 2e3)
+   )
+  )
+  (set_local $$102
+   (get_local $$5)
+  )
+  (set_local $$103
+   (f32.add
+    (get_local $$101)
+    (get_local $$102)
+   )
+  )
+  ;;@ shooter.c:1050:0
+  (drop
+   (call $_create_bullet
+    (get_local $$89)
+    (get_local $$93)
+    (get_local $$98)
+    (get_local $$103)
+   )
+  )
+  ;;@ shooter.c:1055:0
+  (set_local $$104
    (i32.load
     (i32.const 3992)
    )
   )
-  (set_local $$100
+  (set_local $$105
    (i32.add
-    (get_local $$99)
+    (get_local $$104)
     (i32.const 8)
    )
   )
-  (set_local $$101
+  (set_local $$106
    (i32.load
-    (get_local $$100)
+    (get_local $$105)
    )
   )
   (f32.store
-   (get_local $$101)
+   (get_local $$106)
    (f32.const 100)
   )
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1056:0
+  ;;@ shooter.c:1057:0
   (return)
  )
  (func $_step_bullets (; 104 ;) (param $$0 f32)
@@ -11284,7 +11367,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1058:0
+  ;;@ shooter.c:1059:0
   (set_local $$2
    (i32.const 0)
   )
@@ -11326,7 +11409,7 @@
       (br $while-out)
      )
     )
-    ;;@ shooter.c:1059:0
+    ;;@ shooter.c:1060:0
     (set_local $$18
      (i32.load
       (i32.const 3984)
@@ -11372,7 +11455,7 @@
     (if
      (get_local $$24)
      (block
-      ;;@ shooter.c:1060:0
+      ;;@ shooter.c:1061:0
       (set_local $$25
        (i32.load
         (i32.const 3984)
@@ -11409,7 +11492,7 @@
       (set_local $$3
        (get_local $$30)
       )
-      ;;@ shooter.c:1061:0
+      ;;@ shooter.c:1062:0
       (set_local $$31
        (i32.load
         (i32.const 3984)
@@ -11444,7 +11527,7 @@
         (get_local $$35)
        )
       )
-      ;;@ shooter.c:1062:0
+      ;;@ shooter.c:1063:0
       (set_local $$36
        (call $_timespec_diff_float
         (i32.const 3928)
@@ -11469,7 +11552,7 @@
         (br $while-out)
        )
       )
-      ;;@ shooter.c:1070:0
+      ;;@ shooter.c:1071:0
       (set_local $$39
        (i32.load
         (i32.const 3964)
@@ -11487,7 +11570,7 @@
       (set_local $$5
        (get_local $$41)
       )
-      ;;@ shooter.c:1071:0
+      ;;@ shooter.c:1072:0
       (set_local $$42
        (get_local $$5)
       )
@@ -11516,7 +11599,7 @@
       (if
        (get_local $$46)
        (block
-        ;;@ shooter.c:1072:0
+        ;;@ shooter.c:1073:0
         (set_local $$47
          (i32.load
           (i32.const 3964)
@@ -11553,7 +11636,7 @@
         (set_local $$6
          (get_local $$52)
         )
-        ;;@ shooter.c:1073:0
+        ;;@ shooter.c:1074:0
         (set_local $$53
          (i32.load
           (i32.const 3980)
@@ -11571,7 +11654,7 @@
         (set_local $$7
          (get_local $$55)
         )
-        ;;@ shooter.c:1074:0
+        ;;@ shooter.c:1075:0
         (set_local $$56
          (get_local $$7)
         )
@@ -11608,7 +11691,7 @@
         )
        )
       )
-      ;;@ shooter.c:1085:0
+      ;;@ shooter.c:1086:0
       (set_local $$85
        (i32.load
         (i32.const 3956)
@@ -11626,7 +11709,7 @@
       (set_local $$10
        (get_local $$87)
       )
-      ;;@ shooter.c:1086:0
+      ;;@ shooter.c:1087:0
       (set_local $$88
        (i32.load
         (i32.const 3956)
@@ -11663,7 +11746,7 @@
       (set_local $$11
        (get_local $$93)
       )
-      ;;@ shooter.c:1087:0
+      ;;@ shooter.c:1088:0
       (set_local $$94
        (i32.load
         (i32.const 3956)
@@ -11700,7 +11783,7 @@
       (set_local $$12
        (get_local $$99)
       )
-      ;;@ shooter.c:1088:0
+      ;;@ shooter.c:1089:0
       (set_local $$100
        (get_local $$11)
       )
@@ -11738,7 +11821,7 @@
         (get_local $$104)
        )
       )
-      ;;@ shooter.c:1089:0
+      ;;@ shooter.c:1090:0
       (set_local $$106
        (get_local $$12)
       )
@@ -11748,7 +11831,7 @@
         (f32.const 0)
        )
       )
-      ;;@ shooter.c:1088:0
+      ;;@ shooter.c:1089:0
       (set_local $$or$cond
        (i32.or
         (get_local $$105)
@@ -11764,7 +11847,7 @@
         (br $while-out)
        )
       )
-      ;;@ shooter.c:1089:0
+      ;;@ shooter.c:1090:0
       (set_local $$108
        (get_local $$12)
       )
@@ -11795,7 +11878,7 @@
       )
      )
     )
-    ;;@ shooter.c:1058:0
+    ;;@ shooter.c:1059:0
     (set_local $$113
      (get_local $$2)
     )
@@ -11817,14 +11900,14 @@
     (i32.const 5)
    )
    (block
-    ;;@ shooter.c:1063:0
+    ;;@ shooter.c:1064:0
     (call $_destroy_bullet
      (get_local $$38)
     )
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1096:0
+    ;;@ shooter.c:1097:0
     (return)
    )
    (if
@@ -11833,7 +11916,7 @@
      (i32.const 8)
     )
     (block
-     ;;@ shooter.c:1075:0
+     ;;@ shooter.c:1076:0
      (set_local $$61
       (i32.load
        (i32.const 3988)
@@ -11851,7 +11934,7 @@
      (set_local $$8
       (get_local $$63)
      )
-     ;;@ shooter.c:1076:0
+     ;;@ shooter.c:1077:0
      (set_local $$64
       (get_local $$8)
      )
@@ -11880,7 +11963,7 @@
      (if
       (get_local $$68)
       (block
-       ;;@ shooter.c:1077:0
+       ;;@ shooter.c:1078:0
        (set_local $$69
         (i32.load
          (i32.const 3984)
@@ -11917,7 +12000,7 @@
        (set_local $$9
         (get_local $$74)
        )
-       ;;@ shooter.c:1078:0
+       ;;@ shooter.c:1079:0
        (set_local $$75
         (get_local $$9)
        )
@@ -11966,7 +12049,7 @@
        )
       )
      )
-     ;;@ shooter.c:1080:0
+     ;;@ shooter.c:1081:0
      (set_local $$83
       (get_local $$6)
      )
@@ -11976,7 +12059,7 @@
        (f32.const 100)
       )
      )
-     ;;@ shooter.c:1081:0
+     ;;@ shooter.c:1082:0
      (set_local $$84
       (get_local $$3)
      )
@@ -11986,7 +12069,7 @@
      (set_global $STACKTOP
       (get_local $sp)
      )
-     ;;@ shooter.c:1096:0
+     ;;@ shooter.c:1097:0
      (return)
     )
     (if
@@ -11995,7 +12078,7 @@
       (i32.const 14)
      )
      (block
-      ;;@ shooter.c:1091:0
+      ;;@ shooter.c:1092:0
       (set_local $$112
        (get_local $$3)
       )
@@ -12005,7 +12088,7 @@
       (set_global $STACKTOP
        (get_local $sp)
       )
-      ;;@ shooter.c:1096:0
+      ;;@ shooter.c:1097:0
       (return)
      )
      (if
@@ -12359,7 +12442,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1099:0
+  ;;@ shooter.c:1100:0
   (set_local $$32
    (get_local $$1)
   )
@@ -12372,7 +12455,7 @@
   (set_local $$2
    (get_local $$33)
   )
-  ;;@ shooter.c:1100:0
+  ;;@ shooter.c:1101:0
   (set_local $$3
    (i32.const 0)
   )
@@ -12393,7 +12476,7 @@
      )
      (br $while-out)
     )
-    ;;@ shooter.c:1101:0
+    ;;@ shooter.c:1102:0
     (set_local $$4
      (i32.const 0)
     )
@@ -12430,7 +12513,7 @@
        )
        (br $while-out0)
       )
-      ;;@ shooter.c:1102:0
+      ;;@ shooter.c:1103:0
       (set_local $$41
        (i32.load
         (i32.const 3960)
@@ -12477,7 +12560,7 @@
        (if
         (get_local $$47)
         (block
-         ;;@ shooter.c:1103:0
+         ;;@ shooter.c:1104:0
          (set_local $$48
           (i32.load
            (i32.const 3960)
@@ -12514,7 +12597,7 @@
          (set_local $$5
           (get_local $$53)
          )
-         ;;@ shooter.c:1104:0
+         ;;@ shooter.c:1105:0
          (set_local $$54
           (i32.load
            (i32.const 3956)
@@ -12532,7 +12615,7 @@
          (set_local $$6
           (get_local $$56)
          )
-         ;;@ shooter.c:1105:0
+         ;;@ shooter.c:1106:0
          (set_local $$57
           (i32.load
            (i32.const 3984)
@@ -12584,7 +12667,7 @@
          (set_local $$7
           (get_local $$65)
          )
-         ;;@ shooter.c:1106:0
+         ;;@ shooter.c:1107:0
          (set_local $$66
           (i32.load
            (i32.const 3980)
@@ -12636,7 +12719,7 @@
          (set_local $$8
           (get_local $$74)
          )
-         ;;@ shooter.c:1107:0
+         ;;@ shooter.c:1108:0
          (set_local $$75
           (i32.load
            (i32.const 3956)
@@ -12673,7 +12756,7 @@
          (set_local $$9
           (get_local $$80)
          )
-         ;;@ shooter.c:1108:0
+         ;;@ shooter.c:1109:0
          (set_local $$81
           (i32.load
            (i32.const 3956)
@@ -12710,7 +12793,7 @@
          (set_local $$10
           (get_local $$86)
          )
-         ;;@ shooter.c:1109:0
+         ;;@ shooter.c:1110:0
          (set_local $$87
           (i32.load
            (i32.const 3960)
@@ -12747,7 +12830,7 @@
          (set_local $$11
           (get_local $$92)
          )
-         ;;@ shooter.c:1110:0
+         ;;@ shooter.c:1111:0
          (set_local $$93
           (i32.load
            (i32.const 3960)
@@ -12784,7 +12867,7 @@
          (set_local $$12
           (get_local $$98)
          )
-         ;;@ shooter.c:1111:0
+         ;;@ shooter.c:1112:0
          (set_local $$13
           (i32.const 0)
          )
@@ -12821,7 +12904,7 @@
             )
             (br $label$break$L7)
            )
-           ;;@ shooter.c:1112:0
+           ;;@ shooter.c:1113:0
            (set_local $$104
             (i32.load
              (i32.const 3960)
@@ -12867,7 +12950,7 @@
            (if
             (get_local $$110)
             (block
-             ;;@ shooter.c:1113:0
+             ;;@ shooter.c:1114:0
              (set_local $$111
               (get_local $$13)
              )
@@ -12883,7 +12966,7 @@
              (if
               (get_local $$113)
               (block
-               ;;@ shooter.c:1114:0
+               ;;@ shooter.c:1115:0
                (set_local $$114
                 (i32.load
                  (i32.const 3960)
@@ -12920,7 +13003,7 @@
                (set_local $$14
                 (get_local $$119)
                )
-               ;;@ shooter.c:1115:0
+               ;;@ shooter.c:1116:0
                (set_local $$120
                 (i32.load
                  (i32.const 3956)
@@ -12938,7 +13021,7 @@
                (set_local $$15
                 (get_local $$122)
                )
-               ;;@ shooter.c:1116:0
+               ;;@ shooter.c:1117:0
                (set_local $$123
                 (i32.load
                  (i32.const 3984)
@@ -12990,7 +13073,7 @@
                (set_local $$16
                 (get_local $$131)
                )
-               ;;@ shooter.c:1117:0
+               ;;@ shooter.c:1118:0
                (set_local $$132
                 (i32.load
                  (i32.const 3980)
@@ -13042,7 +13125,7 @@
                (set_local $$17
                 (get_local $$140)
                )
-               ;;@ shooter.c:1118:0
+               ;;@ shooter.c:1119:0
                (set_local $$141
                 (i32.load
                  (i32.const 3956)
@@ -13079,7 +13162,7 @@
                (set_local $$18
                 (get_local $$146)
                )
-               ;;@ shooter.c:1119:0
+               ;;@ shooter.c:1120:0
                (set_local $$147
                 (i32.load
                  (i32.const 3956)
@@ -13116,7 +13199,7 @@
                (set_local $$19
                 (get_local $$152)
                )
-               ;;@ shooter.c:1120:0
+               ;;@ shooter.c:1121:0
                (set_local $$153
                 (i32.load
                  (i32.const 3960)
@@ -13153,7 +13236,7 @@
                (set_local $$20
                 (get_local $$158)
                )
-               ;;@ shooter.c:1121:0
+               ;;@ shooter.c:1122:0
                (set_local $$159
                 (i32.load
                  (i32.const 3960)
@@ -13190,7 +13273,7 @@
                (set_local $$21
                 (get_local $$164)
                )
-               ;;@ shooter.c:1124:0
+               ;;@ shooter.c:1125:0
                (set_local $$165
                 (get_local $$9)
                )
@@ -13212,7 +13295,7 @@
                 (get_local $$23)
                 (get_local $$24)
                )
-               ;;@ shooter.c:1126:0
+               ;;@ shooter.c:1127:0
                (set_local $$169
                 (f32.load
                  (get_local $$24)
@@ -13239,7 +13322,7 @@
                (if
                 (get_local $$173)
                 (block
-                 ;;@ shooter.c:1128:0
+                 ;;@ shooter.c:1129:0
                  (set_local $$174
                   (get_local $$8)
                  )
@@ -13279,7 +13362,7 @@
                    )
                   )
                  )
-                 ;;@ shooter.c:1144:0
+                 ;;@ shooter.c:1145:0
                  (set_local $$217
                   (f32.load
                    (get_local $$22)
@@ -13294,7 +13377,7 @@
                  (set_local $$25
                   (get_local $$218)
                  )
-                 ;;@ shooter.c:1145:0
+                 ;;@ shooter.c:1146:0
                  (set_local $$219
                   (f32.load
                    (get_local $$23)
@@ -13309,7 +13392,7 @@
                  (set_local $$26
                   (get_local $$220)
                  )
-                 ;;@ shooter.c:1146:0
+                 ;;@ shooter.c:1147:0
                  (set_local $$221
                   (f32.load
                    (get_local $$22)
@@ -13329,7 +13412,7 @@
                  (set_local $$27
                   (get_local $$223)
                  )
-                 ;;@ shooter.c:1147:0
+                 ;;@ shooter.c:1148:0
                  (set_local $$224
                   (f32.load
                    (get_local $$23)
@@ -13349,7 +13432,7 @@
                  (set_local $$28
                   (get_local $$226)
                  )
-                 ;;@ shooter.c:1148:0
+                 ;;@ shooter.c:1149:0
                  (set_local $$227
                   (get_local $$11)
                  )
@@ -13376,7 +13459,7 @@
                  (set_local $$29
                   (get_local $$231)
                  )
-                 ;;@ shooter.c:1149:0
+                 ;;@ shooter.c:1150:0
                  (set_local $$232
                   (get_local $$25)
                  )
@@ -13410,7 +13493,7 @@
                  (set_local $$30
                   (get_local $$238)
                  )
-                 ;;@ shooter.c:1150:0
+                 ;;@ shooter.c:1151:0
                  (set_local $$239
                   (get_local $$26)
                  )
@@ -13444,7 +13527,7 @@
                  (set_local $$31
                   (get_local $$245)
                  )
-                 ;;@ shooter.c:1151:0
+                 ;;@ shooter.c:1152:0
                  (set_local $$246
                   (get_local $$30)
                  )
@@ -13500,7 +13583,7 @@
                   (get_local $$253)
                   (get_local $$255)
                  )
-                 ;;@ shooter.c:1152:0
+                 ;;@ shooter.c:1153:0
                  (set_local $$256
                   (get_local $$31)
                  )
@@ -13556,7 +13639,7 @@
                   (get_local $$263)
                   (get_local $$265)
                  )
-                 ;;@ shooter.c:1153:0
+                 ;;@ shooter.c:1154:0
                  (set_local $$266
                   (get_local $$30)
                  )
@@ -13612,7 +13695,7 @@
                   (get_local $$273)
                   (get_local $$275)
                  )
-                 ;;@ shooter.c:1154:0
+                 ;;@ shooter.c:1155:0
                  (set_local $$276
                   (get_local $$31)
                  )
@@ -13668,7 +13751,7 @@
                   (get_local $$283)
                   (get_local $$285)
                  )
-                 ;;@ shooter.c:1155:0
+                 ;;@ shooter.c:1156:0
                  (set_local $$286
                   (get_local $$5)
                  )
@@ -13687,7 +13770,7 @@
              )
             )
            )
-           ;;@ shooter.c:1111:0
+           ;;@ shooter.c:1112:0
            (set_local $$288
             (get_local $$13)
            )
@@ -13703,7 +13786,7 @@
            (br $while-in3)
           )
          )
-         ;;@ shooter.c:1130:0
+         ;;@ shooter.c:1131:0
          (set_local $$180
           (i32.load
            (i32.const 3956)
@@ -13795,7 +13878,7 @@
           (get_local $$193)
           (get_local $$195)
          )
-         ;;@ shooter.c:1131:0
+         ;;@ shooter.c:1132:0
          (set_local $$196
           (i32.load
            (i32.const 3956)
@@ -13887,7 +13970,7 @@
           (get_local $$209)
           (get_local $$211)
          )
-         ;;@ shooter.c:1135:0
+         ;;@ shooter.c:1136:0
          (set_local $$212
           (get_local $$14)
          )
@@ -13900,21 +13983,21 @@
            (get_local $$213)
           )
          )
-         ;;@ shooter.c:1138:0
+         ;;@ shooter.c:1139:0
          (set_local $$214
           (get_local $$14)
          )
          (call $_remove_physics_state
           (get_local $$214)
          )
-         ;;@ shooter.c:1139:0
+         ;;@ shooter.c:1140:0
          (set_local $$215
           (get_local $$14)
          )
          (call $_remove_sprite_map
           (get_local $$215)
          )
-         ;;@ shooter.c:1140:0
+         ;;@ shooter.c:1141:0
          (set_local $$216
           (get_local $$14)
          )
@@ -13924,7 +14007,7 @@
         )
        )
       )
-      ;;@ shooter.c:1101:0
+      ;;@ shooter.c:1102:0
       (set_local $$290
        (get_local $$4)
       )
@@ -13940,7 +14023,7 @@
       (br $while-in1)
      )
     )
-    ;;@ shooter.c:1100:0
+    ;;@ shooter.c:1101:0
     (set_local $$292
      (get_local $$3)
     )
@@ -13959,7 +14042,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1163:0
+  ;;@ shooter.c:1164:0
   (return)
  )
  (func $_step_physics (; 106 ;) (param $$0 f32)
@@ -14048,7 +14131,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1166:0
+  ;;@ shooter.c:1167:0
   (set_local $$5
    (get_local $$1)
   )
@@ -14061,7 +14144,7 @@
   (set_local $$2
    (get_local $$6)
   )
-  ;;@ shooter.c:1167:0
+  ;;@ shooter.c:1168:0
   (set_local $$3
    (i32.const 0)
   )
@@ -14082,14 +14165,14 @@
      )
      (br $while-out)
     )
-    ;;@ shooter.c:1168:0
+    ;;@ shooter.c:1169:0
     (set_local $$9
      (get_local $$2)
     )
     (call $_step_physics_balls
      (get_local $$9)
     )
-    ;;@ shooter.c:1169:0
+    ;;@ shooter.c:1170:0
     (set_local $$4
      (i32.const 0)
     )
@@ -14126,7 +14209,7 @@
        )
        (br $while-out0)
       )
-      ;;@ shooter.c:1170:0
+      ;;@ shooter.c:1171:0
       (set_local $$15
        (i32.load
         (i32.const 3956)
@@ -14173,7 +14256,7 @@
        (if
         (get_local $$21)
         (block
-         ;;@ shooter.c:1172:0
+         ;;@ shooter.c:1173:0
          (set_local $$22
           (get_local $$4)
          )
@@ -14219,7 +14302,7 @@
            )
           )
          )
-         ;;@ shooter.c:1173:0
+         ;;@ shooter.c:1174:0
          (set_local $$29
           (i32.load
            (i32.const 3956)
@@ -14305,7 +14388,7 @@
           (get_local $$41)
           (get_local $$43)
          )
-         ;;@ shooter.c:1174:0
+         ;;@ shooter.c:1175:0
          (set_local $$44
           (i32.load
            (i32.const 3956)
@@ -14394,7 +14477,7 @@
         )
        )
       )
-      ;;@ shooter.c:1169:0
+      ;;@ shooter.c:1170:0
       (set_local $$59
        (get_local $$4)
       )
@@ -14410,7 +14493,7 @@
       (br $while-in1)
      )
     )
-    ;;@ shooter.c:1167:0
+    ;;@ shooter.c:1168:0
     (set_local $$61
      (get_local $$3)
     )
@@ -14429,7 +14512,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1179:0
+  ;;@ shooter.c:1180:0
   (return)
  )
  (func $_step_collision_resolve (; 107 ;) (param $$0 f32)
@@ -14541,7 +14624,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1182:0
+  ;;@ shooter.c:1183:0
   (set_local $$2
    (i32.const 0)
   )
@@ -14578,7 +14661,7 @@
      )
      (br $while-out)
     )
-    ;;@ shooter.c:1183:0
+    ;;@ shooter.c:1184:0
     (set_local $$16
      (i32.load
       (i32.const 3964)
@@ -14615,7 +14698,7 @@
     (set_local $$3
      (get_local $$21)
     )
-    ;;@ shooter.c:1184:0
+    ;;@ shooter.c:1185:0
     (set_local $$22
      (i32.load
       (i32.const 3964)
@@ -14652,7 +14735,7 @@
     (set_local $$4
      (get_local $$27)
     )
-    ;;@ shooter.c:1185:0
+    ;;@ shooter.c:1186:0
     (set_local $$28
      (i32.load
       (i32.const 3980)
@@ -14676,7 +14759,7 @@
     (set_local $$5
      (get_local $$31)
     )
-    ;;@ shooter.c:1186:0
+    ;;@ shooter.c:1187:0
     (set_local $$32
      (get_local $$4)
     )
@@ -14701,7 +14784,7 @@
     (set_local $$6
      (get_local $$35)
     )
-    ;;@ shooter.c:1187:0
+    ;;@ shooter.c:1188:0
     (set_local $$36
      (get_local $$5)
     )
@@ -14738,7 +14821,7 @@
       (if
        (get_local $$41)
        (block
-        ;;@ shooter.c:1188:0
+        ;;@ shooter.c:1189:0
         (set_local $$42
          (i32.load
           (i32.const 3968)
@@ -14756,7 +14839,7 @@
         (set_local $$7
          (get_local $$44)
         )
-        ;;@ shooter.c:1189:0
+        ;;@ shooter.c:1190:0
         (set_local $$45
          (i32.load
           (i32.const 3968)
@@ -14793,7 +14876,7 @@
         (set_local $$8
          (get_local $$50)
         )
-        ;;@ shooter.c:1190:0
+        ;;@ shooter.c:1191:0
         (set_local $$51
          (get_local $$8)
         )
@@ -14811,14 +14894,14 @@
         (if
          (get_local $$53)
          (block
-          ;;@ shooter.c:1193:0
+          ;;@ shooter.c:1194:0
           (drop
            (call $_add_hit_feedback_item
             (i32.const 0)
             (f32.const 100)
            )
           )
-          ;;@ shooter.c:1195:0
+          ;;@ shooter.c:1196:0
           (set_local $$54
            (i32.load
             (i32.const 3976)
@@ -14836,7 +14919,7 @@
           (set_local $$9
            (get_local $$56)
           )
-          ;;@ shooter.c:1196:0
+          ;;@ shooter.c:1197:0
           (set_local $$57
            (i32.load
             (i32.const 3976)
@@ -14866,7 +14949,7 @@
            (get_local $$61)
            (i32.const 0)
           )
-          ;;@ shooter.c:1197:0
+          ;;@ shooter.c:1198:0
           (set_local $$62
            (i32.load
             (i32.const 3968)
@@ -14903,7 +14986,7 @@
           (set_local $$10
            (get_local $$67)
           )
-          ;;@ shooter.c:1198:0
+          ;;@ shooter.c:1199:0
           (set_local $$68
            (i32.load
             (i32.const 3968)
@@ -14936,7 +15019,7 @@
            (get_local $$72)
            (f32.const 100)
           )
-          ;;@ shooter.c:1199:0
+          ;;@ shooter.c:1200:0
           (set_local $$73
            (i32.load
             (i32.const 3988)
@@ -14967,7 +15050,7 @@
           (if
            (get_local $$77)
            (block
-            ;;@ shooter.c:1200:0
+            ;;@ shooter.c:1201:0
             (set_local $$78
              (get_local $$10)
             )
@@ -15010,7 +15093,7 @@
       )
      )
     )
-    ;;@ shooter.c:1182:0
+    ;;@ shooter.c:1183:0
     (set_local $$84
      (get_local $$2)
     )
@@ -15029,7 +15112,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1205:0
+  ;;@ shooter.c:1206:0
   (return)
  )
  (func $_step_ai_enemy (; 108 ;) (param $$0 f32)
@@ -15333,7 +15416,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1208:0
+  ;;@ shooter.c:1209:0
   (set_local $$29
    (get_local $$1)
   )
@@ -15346,7 +15429,7 @@
   (set_local $$2
    (get_local $$30)
   )
-  ;;@ shooter.c:1209:0
+  ;;@ shooter.c:1210:0
   (set_local $$31
    (i32.load
     (i32.const 3956)
@@ -15371,7 +15454,7 @@
   (set_local $$3
    (get_local $$34)
   )
-  ;;@ shooter.c:1210:0
+  ;;@ shooter.c:1211:0
   (set_local $$35
    (i32.load
     (i32.const 3956)
@@ -15396,7 +15479,7 @@
   (set_local $$4
    (get_local $$38)
   )
-  ;;@ shooter.c:1211:0
+  ;;@ shooter.c:1212:0
   (set_local $$5
    (i32.const 0)
   )
@@ -15417,7 +15500,7 @@
      )
      (br $while-out)
     )
-    ;;@ shooter.c:1212:0
+    ;;@ shooter.c:1213:0
     (set_local $$6
      (i32.const 0)
     )
@@ -15454,7 +15537,7 @@
        )
        (br $label$break$L4)
       )
-      ;;@ shooter.c:1213:0
+      ;;@ shooter.c:1214:0
       (set_local $$46
        (i32.load
         (i32.const 3980)
@@ -15501,7 +15584,7 @@
        (if
         (get_local $$52)
         (block
-         ;;@ shooter.c:1214:0
+         ;;@ shooter.c:1215:0
          (set_local $$53
           (i32.load
            (i32.const 3980)
@@ -15538,7 +15621,7 @@
          (set_local $$7
           (get_local $$58)
          )
-         ;;@ shooter.c:1215:0
+         ;;@ shooter.c:1216:0
          (set_local $$59
           (i32.load
            (i32.const 3980)
@@ -15572,7 +15655,7 @@
          (set_local $$8
           (get_local $$64)
          )
-         ;;@ shooter.c:1216:0
+         ;;@ shooter.c:1217:0
          (set_local $$65
           (i32.load
            (i32.const 3988)
@@ -15590,7 +15673,7 @@
          (set_local $$9
           (get_local $$67)
          )
-         ;;@ shooter.c:1217:0
+         ;;@ shooter.c:1218:0
          (set_local $$68
           (i32.load
            (i32.const 3988)
@@ -15627,7 +15710,7 @@
          (set_local $$10
           (get_local $$73)
          )
-         ;;@ shooter.c:1218:0
+         ;;@ shooter.c:1219:0
          (set_local $$74
           (get_local $$10)
          )
@@ -15651,7 +15734,7 @@
            (br $label$break$L4)
           )
          )
-         ;;@ shooter.c:1226:0
+         ;;@ shooter.c:1227:0
          (set_local $$92
           (i32.load
            (i32.const 3956)
@@ -15669,7 +15752,7 @@
          (set_local $$11
           (get_local $$94)
          )
-         ;;@ shooter.c:1227:0
+         ;;@ shooter.c:1228:0
          (set_local $$95
           (i32.load
            (i32.const 3956)
@@ -15706,7 +15789,7 @@
          (set_local $$12
           (get_local $$100)
          )
-         ;;@ shooter.c:1228:0
+         ;;@ shooter.c:1229:0
          (set_local $$101
           (i32.load
            (i32.const 3956)
@@ -15743,7 +15826,7 @@
          (set_local $$13
           (get_local $$106)
          )
-         ;;@ shooter.c:1230:0
+         ;;@ shooter.c:1231:0
          (set_local $$107
           (get_local $$3)
          )
@@ -15768,7 +15851,7 @@
           (get_local $$18)
           (get_local $$19)
          )
-         ;;@ shooter.c:1234:0
+         ;;@ shooter.c:1235:0
          (set_local $$111
           (f32.load
            (get_local $$17)
@@ -15859,7 +15942,7 @@
           (get_local $$126)
           (get_local $$121)
          )
-         ;;@ shooter.c:1235:0
+         ;;@ shooter.c:1236:0
          (set_local $$127
           (f32.load
            (get_local $$18)
@@ -15950,7 +16033,7 @@
           (get_local $$142)
           (get_local $$137)
          )
-         ;;@ shooter.c:1236:0
+         ;;@ shooter.c:1237:0
          (set_local $$143
           (f32.load
            (get_local $$19)
@@ -15988,7 +16071,7 @@
           (get_local $$148)
           (get_local $$143)
          )
-         ;;@ shooter.c:1239:0
+         ;;@ shooter.c:1240:0
          (set_local $$20
           (i32.const 0)
          )
@@ -16025,7 +16108,7 @@
             )
             (br $label$break$L7)
            )
-           ;;@ shooter.c:1240:0
+           ;;@ shooter.c:1241:0
            (set_local $$154
             (get_local $$20)
            )
@@ -16086,7 +16169,7 @@
              (if
               (get_local $$164)
               (block
-               ;;@ shooter.c:1241:0
+               ;;@ shooter.c:1242:0
                (set_local $$165
                 (i32.load
                  (i32.const 3980)
@@ -16123,7 +16206,7 @@
                (set_local $$21
                 (get_local $$170)
                )
-               ;;@ shooter.c:1242:0
+               ;;@ shooter.c:1243:0
                (set_local $$171
                 (i32.load
                  (i32.const 3956)
@@ -16141,7 +16224,7 @@
                (set_local $$22
                 (get_local $$173)
                )
-               ;;@ shooter.c:1243:0
+               ;;@ shooter.c:1244:0
                (set_local $$174
                 (i32.load
                  (i32.const 3956)
@@ -16178,7 +16261,7 @@
                (set_local $$23
                 (get_local $$179)
                )
-               ;;@ shooter.c:1244:0
+               ;;@ shooter.c:1245:0
                (set_local $$180
                 (i32.load
                  (i32.const 3956)
@@ -16215,7 +16298,7 @@
                (set_local $$24
                 (get_local $$185)
                )
-               ;;@ shooter.c:1246:0
+               ;;@ shooter.c:1247:0
                (set_local $$186
                 (get_local $$12)
                )
@@ -16237,7 +16320,7 @@
                 (get_local $$26)
                 (get_local $$27)
                )
-               ;;@ shooter.c:1247:0
+               ;;@ shooter.c:1248:0
                (set_local $$190
                 (f32.load
                  (get_local $$27)
@@ -16252,7 +16335,7 @@
                (set_local $$28
                 (get_local $$191)
                )
-               ;;@ shooter.c:1248:0
+               ;;@ shooter.c:1249:0
                (set_local $$192
                 (get_local $$28)
                )
@@ -16265,7 +16348,7 @@
                (if
                 (get_local $$193)
                 (block
-                 ;;@ shooter.c:1249:0
+                 ;;@ shooter.c:1250:0
                  (set_local $$194
                   (get_local $$28)
                  )
@@ -16332,7 +16415,7 @@
                   (get_local $$203)
                   (get_local $$205)
                  )
-                 ;;@ shooter.c:1250:0
+                 ;;@ shooter.c:1251:0
                  (set_local $$206
                   (get_local $$28)
                  )
@@ -16405,7 +16488,7 @@
              )
             )
            )
-           ;;@ shooter.c:1239:0
+           ;;@ shooter.c:1240:0
            (set_local $$218
             (get_local $$20)
            )
@@ -16424,7 +16507,7 @@
         )
        )
       )
-      ;;@ shooter.c:1212:0
+      ;;@ shooter.c:1213:0
       (set_local $$220
        (get_local $$6)
       )
@@ -16449,7 +16532,7 @@
       (set_local $label
        (i32.const 0)
       )
-      ;;@ shooter.c:1219:0
+      ;;@ shooter.c:1220:0
       (set_local $$77
        (get_local $$8)
       )
@@ -16468,14 +16551,14 @@
       (if
        (get_local $$79)
        (block
-        ;;@ shooter.c:1220:0
+        ;;@ shooter.c:1221:0
         (set_local $$80
          (get_local $$7)
         )
         (call $_destroy_zombie
          (get_local $$80)
         )
-        ;;@ shooter.c:1221:0
+        ;;@ shooter.c:1222:0
         (set_local $$81
          (i32.load
           (i32.const 4000)
@@ -16504,7 +16587,7 @@
         )
        )
       )
-      ;;@ shooter.c:1223:0
+      ;;@ shooter.c:1224:0
       (set_local $$85
        (get_local $$8)
       )
@@ -16549,7 +16632,7 @@
       )
      )
     )
-    ;;@ shooter.c:1211:0
+    ;;@ shooter.c:1212:0
     (set_local $$222
      (get_local $$5)
     )
@@ -16568,7 +16651,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1257:0
+  ;;@ shooter.c:1258:0
   (return)
  )
  (func $_step_proximity_attack (; 109 ;) (param $$0 f32)
@@ -16662,7 +16745,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1260:0
+  ;;@ shooter.c:1261:0
   (set_local $$2
    (i32.const 0)
   )
@@ -16699,7 +16782,7 @@
      )
      (br $while-out)
     )
-    ;;@ shooter.c:1261:0
+    ;;@ shooter.c:1262:0
     (set_local $$10
      (i32.load
       (i32.const 3968)
@@ -16745,7 +16828,7 @@
     (if
      (get_local $$16)
      (block
-      ;;@ shooter.c:1262:0
+      ;;@ shooter.c:1263:0
       (set_local $$17
        (i32.load
         (i32.const 3968)
@@ -16788,7 +16871,7 @@
       (if
        (get_local $$23)
        (block
-        ;;@ shooter.c:1263:0
+        ;;@ shooter.c:1264:0
         (set_local $$24
          (get_local $$1)
         )
@@ -16843,7 +16926,7 @@
         )
        )
        (block
-        ;;@ shooter.c:1266:0
+        ;;@ shooter.c:1267:0
         (set_local $$33
          (i32.load
           (i32.const 3968)
@@ -16878,7 +16961,7 @@
         )
        )
       )
-      ;;@ shooter.c:1268:0
+      ;;@ shooter.c:1269:0
       (set_local $$38
        (i32.load
         (i32.const 3968)
@@ -16921,7 +17004,7 @@
       (if
        (get_local $$44)
        (block
-        ;;@ shooter.c:1269:0
+        ;;@ shooter.c:1270:0
         (set_local $$45
          (i32.load
           (i32.const 3968)
@@ -16964,7 +17047,7 @@
         (if
          (get_local $$51)
          (block
-          ;;@ shooter.c:1271:0
+          ;;@ shooter.c:1272:0
           (set_local $$52
            (i32.load
             (i32.const 3968)
@@ -17001,7 +17084,7 @@
           (set_local $$3
            (get_local $$57)
           )
-          ;;@ shooter.c:1272:0
+          ;;@ shooter.c:1273:0
           (set_local $$58
            (i32.load
             (i32.const 3976)
@@ -17019,7 +17102,7 @@
           (set_local $$4
            (get_local $$60)
           )
-          ;;@ shooter.c:1273:0
+          ;;@ shooter.c:1274:0
           (set_local $$61
            (i32.load
             (i32.const 3976)
@@ -17055,7 +17138,7 @@
       )
      )
     )
-    ;;@ shooter.c:1260:0
+    ;;@ shooter.c:1261:0
     (set_local $$66
      (get_local $$2)
     )
@@ -17074,7 +17157,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1277:0
+  ;;@ shooter.c:1278:0
   (return)
  )
  (func $_step_hit_feedback_table (; 110 ;) (param $$0 f32)
@@ -17167,7 +17250,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1280:0
+  ;;@ shooter.c:1281:0
   (set_local $$2
    (i32.const 0)
   )
@@ -17204,7 +17287,7 @@
      )
      (br $while-out)
     )
-    ;;@ shooter.c:1281:0
+    ;;@ shooter.c:1282:0
     (set_local $$12
      (get_local $$1)
     )
@@ -17257,7 +17340,7 @@
      (get_local $$18)
      (get_local $$20)
     )
-    ;;@ shooter.c:1282:0
+    ;;@ shooter.c:1283:0
     (set_local $$21
      (i32.load
       (i32.const 3972)
@@ -17294,7 +17377,7 @@
     (set_local $$3
      (get_local $$26)
     )
-    ;;@ shooter.c:1283:0
+    ;;@ shooter.c:1284:0
     (set_local $$27
      (i32.load
       (i32.const 3976)
@@ -17312,7 +17395,7 @@
     (set_local $$4
      (get_local $$29)
     )
-    ;;@ shooter.c:1284:0
+    ;;@ shooter.c:1285:0
     (set_local $$30
      (i32.load
       (i32.const 3972)
@@ -17355,7 +17438,7 @@
     (if
      (get_local $$36)
      (block
-      ;;@ shooter.c:1285:0
+      ;;@ shooter.c:1286:0
       (set_local $$37
        (i32.load
         (i32.const 3972)
@@ -17398,7 +17481,7 @@
        (get_local $$37)
        (get_local $$43)
       )
-      ;;@ shooter.c:1286:0
+      ;;@ shooter.c:1287:0
       (set_local $$44
        (i32.load
         (i32.const 3976)
@@ -17416,7 +17499,7 @@
       (set_local $$5
        (get_local $$46)
       )
-      ;;@ shooter.c:1287:0
+      ;;@ shooter.c:1288:0
       (set_local $$47
        (i32.load
         (i32.const 3988)
@@ -17453,7 +17536,7 @@
       (set_local $$6
        (get_local $$52)
       )
-      ;;@ shooter.c:1288:0
+      ;;@ shooter.c:1289:0
       (set_local $$53
        (get_local $$6)
       )
@@ -17466,7 +17549,7 @@
       (if
        (get_local $$54)
        (block
-        ;;@ shooter.c:1289:0
+        ;;@ shooter.c:1290:0
         (set_local $$55
          (i32.load
           (i32.const 3976)
@@ -17500,7 +17583,7 @@
       )
      )
      (block
-      ;;@ shooter.c:1293:0
+      ;;@ shooter.c:1294:0
       (set_local $$60
        (i32.load
         (i32.const 3976)
@@ -17532,7 +17615,7 @@
       )
      )
     )
-    ;;@ shooter.c:1280:0
+    ;;@ shooter.c:1281:0
     (set_local $$65
      (get_local $$2)
     )
@@ -17551,7 +17634,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1296:0
+  ;;@ shooter.c:1297:0
   (return)
  )
  (func $_step_wave_rest (; 111 ;) (param $$0 f32)
@@ -17588,7 +17671,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1299:0
+  ;;@ shooter.c:1300:0
   (set_local $$2
    (f32.load
     (i32.const 4612)
@@ -17608,11 +17691,11 @@
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1306:0
+    ;;@ shooter.c:1307:0
     (return)
    )
   )
-  ;;@ shooter.c:1300:0
+  ;;@ shooter.c:1301:0
   (set_local $$4
    (get_local $$1)
   )
@@ -17631,7 +17714,7 @@
    (i32.const 4612)
    (get_local $$6)
   )
-  ;;@ shooter.c:1301:0
+  ;;@ shooter.c:1302:0
   (set_local $$7
    (f32.load
     (i32.const 4612)
@@ -17651,11 +17734,11 @@
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1306:0
+    ;;@ shooter.c:1307:0
     (return)
    )
   )
-  ;;@ shooter.c:1302:0
+  ;;@ shooter.c:1303:0
   (set_local $$9
    (i32.load
     (i32.const 4000)
@@ -17671,12 +17754,12 @@
    (i32.const 4000)
    (get_local $$10)
   )
-  ;;@ shooter.c:1303:0
+  ;;@ shooter.c:1304:0
   (call $_start_wave)
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1306:0
+  ;;@ shooter.c:1307:0
   (return)
  )
  (func $_step_overlay_data (; 112 ;) (param $$0 f32)
@@ -17724,7 +17807,7 @@
   (set_local $$1
    (get_local $$0)
   )
-  ;;@ shooter.c:1309:0
+  ;;@ shooter.c:1310:0
   (set_local $$2
    (i32.load
     (i32.const 3988)
@@ -17767,7 +17850,7 @@
    (get_local $$8)
    (get_local $$7)
   )
-  ;;@ shooter.c:1310:0
+  ;;@ shooter.c:1311:0
   (set_local $$9
    (i32.load
     (i32.const 3996)
@@ -17793,7 +17876,7 @@
   (if
    (get_local $$12)
    (block
-    ;;@ shooter.c:1311:0
+    ;;@ shooter.c:1312:0
     (set_local $$13
      (get_local $$1)
     )
@@ -17826,11 +17909,11 @@
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1317:0
+    ;;@ shooter.c:1318:0
     (return)
    )
    (block
-    ;;@ shooter.c:1314:0
+    ;;@ shooter.c:1315:0
     (set_local $$18
      (i32.load
       (i32.const 3996)
@@ -17846,7 +17929,7 @@
      (get_local $$19)
      (i32.const 0)
     )
-    ;;@ shooter.c:1315:0
+    ;;@ shooter.c:1316:0
     (set_local $$20
      (i32.load
       (i32.const 3996)
@@ -17865,7 +17948,7 @@
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1317:0
+    ;;@ shooter.c:1318:0
     (return)
    )
   )
@@ -17905,81 +17988,81 @@
     (i32.const 16)
    )
   )
-  ;;@ shooter.c:1321:0
+  ;;@ shooter.c:1322:0
   (set_local $$1
    (call $_step_time)
   )
   (set_local $$0
    (get_local $$1)
   )
-  ;;@ shooter.c:1322:0
-  (call $_clear_collision_table)
   ;;@ shooter.c:1323:0
+  (call $_clear_collision_table)
+  ;;@ shooter.c:1324:0
   (set_local $$2
    (get_local $$0)
   )
   (call $_step_physics
    (get_local $$2)
   )
-  ;;@ shooter.c:1324:0
+  ;;@ shooter.c:1325:0
   (set_local $$3
    (get_local $$0)
   )
   (call $_step_collision_resolve
    (get_local $$3)
   )
-  ;;@ shooter.c:1325:0
+  ;;@ shooter.c:1326:0
   (set_local $$4
    (get_local $$0)
   )
   (call $_step_proximity_attack
    (get_local $$4)
   )
-  ;;@ shooter.c:1326:0
+  ;;@ shooter.c:1327:0
   (set_local $$5
    (get_local $$0)
   )
   (call $_step_hit_feedback_table
    (get_local $$5)
   )
-  ;;@ shooter.c:1327:0
+  ;;@ shooter.c:1328:0
   (set_local $$6
    (get_local $$0)
   )
   (call $_step_weapon_states
    (get_local $$6)
   )
-  ;;@ shooter.c:1328:0
+  ;;@ shooter.c:1329:0
   (set_local $$7
    (get_local $$0)
   )
   (call $_step_player
    (get_local $$7)
   )
-  ;;@ shooter.c:1329:0
+  ;;@ shooter.c:1330:0
   (set_local $$8
    (get_local $$0)
   )
   (call $_step_ai_enemy
    (get_local $$8)
   )
-  ;;@ shooter.c:1330:0
+  ;;@ shooter.c:1331:0
   (set_local $$9
    (get_local $$0)
   )
   (call $_step_bullets
    (get_local $$9)
   )
-  ;;@ shooter.c:1331:0
-  (call $_step_wave_emitter)
   ;;@ shooter.c:1332:0
+  (call $_step_wave_emitter)
+  ;;@ shooter.c:1333:0
   (set_local $$10
    (get_local $$0)
   )
   (call $_step_wave_rest
    (get_local $$10)
   )
-  ;;@ shooter.c:1333:0
+  ;;@ shooter.c:1334:0
   (set_local $$11
    (f32.load
     (i32.const 4612)
@@ -17996,7 +18079,7 @@
     (get_local $$12)
    )
    (block
-    ;;@ shooter.c:1336:0
+    ;;@ shooter.c:1337:0
     (set_local $$13
      (get_local $$0)
     )
@@ -18006,13 +18089,13 @@
     (set_global $STACKTOP
      (get_local $sp)
     )
-    ;;@ shooter.c:1337:0
+    ;;@ shooter.c:1338:0
     (return)
    )
   )
-  ;;@ shooter.c:1334:0
+  ;;@ shooter.c:1335:0
   (call $_step_wave_completion)
-  ;;@ shooter.c:1336:0
+  ;;@ shooter.c:1337:0
   (set_local $$13
    (get_local $$0)
   )
@@ -18022,7 +18105,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1337:0
+  ;;@ shooter.c:1338:0
   (return)
  )
  (func $_main (; 114 ;) (param $$0 i32) (param $$1 i32) (result i32)
@@ -18057,7 +18140,7 @@
   (set_global $STACKTOP
    (get_local $sp)
   )
-  ;;@ shooter.c:1341:0
+  ;;@ shooter.c:1342:0
   (return
    (i32.const 0)
   )

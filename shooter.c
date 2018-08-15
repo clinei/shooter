@@ -14,10 +14,6 @@
 
 * first enemy doesn't attack
 
-* search for "WRONG"
-
-* search for "trap"
-
 */
 
 /*  TASKS
@@ -711,14 +707,11 @@ struct Weapon_States* weapon_states;
 void alloc_weapon_states(size_t max_count) {
     weapon_states = malloc(sizeof(struct Weapon_States));
     weapon_states->firing_state = malloc(max_count * sizeof(float));
-    // for some unknown reason
-    // uncommenting this line results in an LLVM trap
-    printf("before\n");
+    weapon_states->firing_speed = malloc(max_count * sizeof(float));
     for (table_id_t i = 0; i < max_count; i += 1) {
         weapon_states->firing_state[i] = 1;
+        weapon_states->firing_speed[i] = FIRING_SPEED;
     }
-    weapon_states->firing_speed = malloc(max_count * sizeof(float));
-    weapon_states->firing_speed[0] = FIRING_SPEED;
     weapon_states->max_count = max_count;
     weapon_states->curr_max = 1;
 }
@@ -729,7 +722,7 @@ void step_weapon_states(float delta) {
             weapon_states->firing_state[i] -= weapon_states->firing_speed[i] * delta;
         }
         else {
-            weapon_states->firing_state = 0;
+            weapon_states->firing_state[i] = 0;
         }
     }
 }
@@ -1062,10 +1055,6 @@ void step_bullets(float delta) {
             if (timespec_diff_float(&curr_time, &created_at) > BULLET_LIFETIME) {
                 destroy_bullet(entity_id);
                 break;
-            }
-            if (entity_id > bullets->curr_max) {
-                // printf("WRONG\n");
-                // abort();
             }
             const table_id_t collision_id = find_item_index(collision_table, entity_id);
             if (collision_id < collision_table->curr_max) {
