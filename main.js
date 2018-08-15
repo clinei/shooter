@@ -3,6 +3,8 @@ const ctx = canvas.getContext('2d');
 
 const step = Module.cwrap('step');
 const get_score = Module.cwrap('get_score');
+const start_time = Module.cwrap('start_time');
+const stop_time = Module.cwrap('stop_time');
 const set_screen_size = Module.cwrap('set_screen_size', null, ['number', 'number']);
 
 function find_item_index(table, entity_id) {
@@ -179,8 +181,6 @@ async function main() {
 
     requestAnimationFrame(frame);
     function frame() {
-
-        step();
         
         render();
         
@@ -311,13 +311,11 @@ async function main() {
 
 Module.postRun.push(main);
 
-/*
 window.addEventListener('blur', onblur);
 function onblur(event) {
-    pause();
+    stop_time();
 }
 window.addEventListener('focus', onfocus);
 function onfocus(event) {
-    unpause();
+    start_time();
 }
-*/

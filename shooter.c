@@ -10,15 +10,9 @@
 
 /*  BUGS
 
-* first enemy doesn't attack
-
 */
 
 /*  TASKS
-
-* make a separate game clock
-  and set and restore it when the player exits and enters the window
-  so we can pause and unpause
 
 * add a weapon that uses moving lines for bullet hit logic
   and graphics
@@ -94,7 +88,7 @@
 
 #define PLAYER_SPEED 200
 #define ZOMBIE_SPEED 200
-#define BULLET_SPEED 2000
+#define BULLET_SPEED 1000
 #define FIRING_SPEED 200
 #define HIT_FEEDBACK_SPEED 400
 #define MAX_FIRING_STATE 100
@@ -105,8 +99,8 @@
 #define MAX_ENTITY_COUNT 2000
 #define AI_ENEMY_PREFERRED_DISTANCE 40
 #define AI_ENEMY_ITER_COUNT 3 // @Test if this is actually helping stabilize
-#define PHYSICS_ITER_COUNT 5
-#define PHYSICS_BALL_ITER_COUNT 3
+#define PHYSICS_ITER_COUNT 2
+#define PHYSICS_BALL_ITER_COUNT 2 // @Bug if these are bigger than 1, we duplicate collisions
 
 typedef unsigned int table_id_t;
 typedef unsigned char enemy_type_t;
@@ -137,7 +131,7 @@ enum Enemy_Type {
 };
 #define ENEMY_TYPE_COUNT 4
 
-struct timespec start_time;
+struct timespec start_timestamp;
 struct timespec curr_time;
 struct timespec prev_time;
 
@@ -165,15 +159,23 @@ float timespec_diff_float(const struct timespec* stop, const struct timespec* st
     return timespec_to_float(&delta);
 }
 
-void begin_time() {
-    clock_gettime(CLOCK_REALTIME, &start_time);
+void step();
+bool paused = false;
+
+EMSCRIPTEN_KEEPALIVE
+void start_time() {
+    clock_gettime(CLOCK_REALTIME, &start_timestamp);
+    prev_time.tv_sec  = 0;
+    prev_time.tv_nsec = 0;
+    emscripten_set_main_loop(&step, 0, false);
 }
+EMSCRIPTEN_KEEPALIVE
 void stop_time() {
-    
+    emscripten_cancel_main_loop();
 }
 float step_time() {
     clock_gettime(CLOCK_REALTIME, &curr_time);
-    timespec_diff(&curr_time, &start_time, &curr_time);
+    timespec_diff(&curr_time, &start_timestamp, &curr_time);
     const float delta = timespec_diff_float(&curr_time, &prev_time);
     prev_time = curr_time;
     return delta;
@@ -253,7 +255,7 @@ table_id_t add_table_item(void* table_ptr, table_id_t entity_id) {
     struct Table* table = (struct Table*)table_ptr;
     table_id_t index = find_first_unused_item(table);
     if (index == table->curr_max) {
-        table->curr_max = index + 1;
+        table->curr_max += 1;
     }
     if (index < table->max_count) {
         table->entity_id[index] = entity_id;
@@ -290,7 +292,7 @@ void alloc_entity_table(size_t max_count) {
     for (table_id_t i = 0; i < max_count; i += 1) {
         table->used[i] = false;
     }
-    table->curr_max = 1;
+    table->curr_max = 0;
 }
 table_id_t create_entity() {
     const table_id_t entity_id = find_first_unused_item(entity_table);
@@ -411,7 +413,7 @@ void clear_collision_table() {
     for (table_id_t i = 0; i < collision_table->curr_max; i += 1) {
         collision_table->used[i] = false;
     }
-    collision_table->curr_max = 1;
+    collision_table->curr_max = 0;
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -472,7 +474,7 @@ void clear_hit_feedback_table() {
     for (table_id_t i = 0; i < hit_feedback_table->curr_max; i += 1) {
         hit_feedback_table->used[i] = false;
     }
-    hit_feedback_table->curr_max = 1;
+    hit_feedback_table->curr_max = 0;
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -888,20 +890,32 @@ struct Input_State* input_state;
 
 EM_BOOL keydown(int event_type, const struct EmscriptenKeyboardEvent* event, void* user_data) {
     EM_BOOL consumed = false;
-    if(event->key[0] == 'w') {
+    if(strcmp(event->key, "w") == 0) {
         input_state->move_up = true;
         consumed = true;
     }
-    if(event->key[0] == 'a') {
+    if(strcmp(event->key, "a") == 0) {
         input_state->move_left = true;
         consumed = true;
     }
-    if(event->key[0] == 's') {
+    if(strcmp(event->key, "s") == 0) {
         input_state->move_down = true;
         consumed = true;
     }
-    if(event->key[0] == 'd') {
+    if(strcmp(event->key, "d") == 0) {
         input_state->move_right = true;
+        consumed = true;
+    }
+
+    if (strcmp(event->key, "Escape") == 0) {
+        if (paused) {
+            paused = false;
+            start_time();
+        }
+        else {
+            paused = true;
+            stop_time();
+        }
         consumed = true;
     }
 
@@ -909,19 +923,19 @@ EM_BOOL keydown(int event_type, const struct EmscriptenKeyboardEvent* event, voi
 }
 EM_BOOL keyup(int event_type, const struct EmscriptenKeyboardEvent* event, void* user_data) {
     EM_BOOL consumed = false;
-    if(event->key[0] == 'w') {
+    if(strcmp(event->key, "w") == 0) {
         input_state->move_up = false;
         consumed = true;
     }
-    if(event->key[0] == 'a') {
+    if(strcmp(event->key, "a") == 0) {
         input_state->move_left = false;
         consumed = true;
     }
-    if(event->key[0] == 's') {
+    if(strcmp(event->key, "s") == 0) {
         input_state->move_down = false;
         consumed = true;
     }
-    if(event->key[0] == 'd') {
+    if(strcmp(event->key, "d") == 0) {
         input_state->move_right = false;
         consumed = true;
     }
@@ -959,7 +973,7 @@ EMSCRIPTEN_KEEPALIVE
 void init(const int width, const int height) {
     set_screen_size(width, height);
 
-    begin_time();
+    start_time();
 
     wave_rest.rest_state = -0.01;
 
@@ -1114,11 +1128,8 @@ void step_physics_balls(float delta) {
                                     
                                 if (is_enemy && j_is_bullet) {
                                     // enemy knockback
-                                    physics_states->x[i] -= physics_states->x_speed[i] * delta * 40;
-                                    physics_states->y[i] -= physics_states->y_speed[i] * delta * 40;
-                                    // if we process collisions separately
-                                    // we can combine this with what's in step_bullet
-                                    // and the result should be cleaner
+                                    physics_states->x[i] -= physics_states->x_speed[i] * delta * 10;
+                                    physics_states->y[i] -= physics_states->y_speed[i] * delta * 10;
                                     add_collision_item(j_entity_id, entity_id);
                                     // we're gonna destroy this bullet in step_bullets
                                     // this bullet can't hurt anyone else
@@ -1169,7 +1180,7 @@ void step_collision_resolve(float delta) {
     for (table_id_t i = 0; i < collision_table->curr_max; i += 1) {
         const table_id_t entity_id = collision_table->entity_id[i];
         const table_id_t entity_id_2 = collision_table->entity_id_2[i];
-        const bool is_enemy = find_item_index(ai_enemy, entity_id);
+        const bool is_enemy = find_item_index(ai_enemy, entity_id) < ai_enemy->curr_max;
         const bool with_player = entity_id_2 == 0;
         if (is_enemy && with_player) {
             const table_id_t proximity_attack_id = find_item_index(proximity_attack, entity_id);
@@ -1249,11 +1260,7 @@ void step_proximity_attack(float delta) {
             if (proximity_attack->attack_state[i] > 0) {
                 proximity_attack->attack_state[i] -= 100 * delta;
             }
-            else {
-                proximity_attack->attack_state[i] = 0;
-            }
-            if (proximity_attack->attack_state[i] < 20 &&
-                proximity_attack->attack_state[i] > 0) {
+            if (proximity_attack->attack_state[i] < 20) {
                 // prepare to bite
                 const table_id_t entity_id = proximity_attack->entity_id[i];
                 const table_id_t sprite_map_id = find_item_index(sprite_map, entity_id);
@@ -1305,7 +1312,7 @@ void step_overlay_data(float delta) {
 
 EMSCRIPTEN_KEEPALIVE
 void step() {
-    const float delta = step_time();
+    float delta = step_time();
     clear_collision_table();
     step_physics(delta);
     step_collision_resolve(delta);
