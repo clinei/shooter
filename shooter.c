@@ -22,8 +22,6 @@
 
 /*  TASKS
 
-* add wave start announcement text
-
 * make a separate game clock
   and set and restore it when the player exits and enters the window
   so we can pause and unpause
@@ -101,7 +99,7 @@
 */
 
 #define PLAYER_SPEED 200
-#define ZOMBIE_SPEED 100
+#define ZOMBIE_SPEED 200
 #define BULLET_SPEED 2000
 #define FIRING_SPEED 200
 #define HIT_FEEDBACK_SPEED 400
@@ -741,6 +739,31 @@ struct Weapon_States* get_weapon_states() {
     return weapon_states;
 }
 
+struct Overlay_Data {
+    uint player_dead;
+    uint wave_start;
+    uint wave_end;
+    float wave_state;
+};
+struct Overlay_Data* overlay_data;
+void alloc_overlay_data() {
+    overlay_data = malloc(sizeof(struct Overlay_Data));
+    overlay_data->player_dead = false;
+    overlay_data->wave_start = 0;
+    overlay_data->wave_end = 0;
+    overlay_data->wave_state = 0;
+}
+
+EMSCRIPTEN_KEEPALIVE
+struct Overlay_Data* get_overlay_data() {
+    return overlay_data;
+}
+
+struct Wave_Rest {
+    float rest_state;
+};
+struct Wave_Rest wave_rest;
+
 struct Campaign {
     size_t max_count;
     size_t curr_max;
@@ -848,13 +871,15 @@ void start_wave() {
     wave_emitter.emit_interval = 1;
     wave_emitter.last_emit_at = curr_time;
     wave_emitter.last_emit_id = 0;
+
+    overlay_data->wave_start = curr_wave;
+    overlay_data->wave_state = 2.0;
 }
 void end_wave() {
-    curr_wave += 1;
-
-    // @Incomplete
-    // should wait for a while
-    start_wave();
+    wave_rest.rest_state = 3.0;
+    
+    overlay_data->wave_end = curr_wave;
+    overlay_data->wave_state = 2.0;
 }
 
 const char* str_window = "#window";
@@ -945,6 +970,8 @@ void init(const int width, const int height) {
 
     begin_time();
 
+    wave_rest.rest_state = -0.01;
+
     alloc_proximity_attack(MAX_ENTITY_COUNT);
     alloc_hit_feedback_table(MAX_ENTITY_COUNT);
     alloc_collision_table(MAX_ENTITY_COUNT); // times 2?
@@ -959,6 +986,8 @@ void init(const int width, const int height) {
     alloc_weapon_states(8);
     alloc_campaign(20);
     generate_campaign_waves();
+
+    alloc_overlay_data();
 
     input_state = malloc(sizeof(struct Input_State));
 
@@ -979,7 +1008,7 @@ uint get_score() {
     return score;
 }
 void step_player(float delta) {
-    if (health_table->health_points[0] < 0.01) {
+    if (health_table->health_points[0] < 0) {
         return;
     }
     const float x = physics_states->x[0];
@@ -1140,7 +1169,7 @@ void step_physics(float delta) {
         for (table_id_t i = 0; i < physics_states->curr_max; i += 1) {
             if (physics_states->used[i]) {
                 // when the player is dead, it can't be moved
-                if (!(i == 0 && health_table->health_points[0] < 0.01)) {
+                if (!(i == 0 && health_table->health_points[0] < 0)) {
                     physics_states->x[i] += physics_states->x_speed[i] * delta_iter;
                     physics_states->y[i] += physics_states->y_speed[i] * delta_iter;
                 }
@@ -1167,7 +1196,9 @@ void step_collision_resolve(float delta) {
                 sprite_map->sprite_variant[sprite_map_id] = 0;
                 const float proximity_attack_damage = proximity_attack->damage[proximity_attack_id];
                 proximity_attack->attack_state[proximity_attack_id] = 100;
-                health_table->health_points[0] -= proximity_attack_damage;
+                if (health_table->health_points[0] >= 0) {
+                    health_table->health_points[0] -= proximity_attack_damage;
+                }
             }
         }
     }
@@ -1200,8 +1231,8 @@ void step_ai_enemy(float delta) {
                                 &player_dx, &player_dy, &player_distance,
                                 &player_dir_x, &player_dir_y, &player_angle);
 
-                physics_states->x_speed[physics_id] = -player_dir_x * ZOMBIE_SPEED;
-                physics_states->y_speed[physics_id] = -player_dir_y * ZOMBIE_SPEED;
+                physics_states->x_speed[physics_id] = -player_dir_x * ZOMBIE_SPEED * fabs(sin(timespec_to_float(&curr_time) * 5));
+                physics_states->y_speed[physics_id] = -player_dir_y * ZOMBIE_SPEED * fabs(sin(timespec_to_float(&curr_time) * 5));
                 physics_states->angle[physics_id] = player_angle;
 
                 // keep away from other enemies
@@ -1264,6 +1295,27 @@ void step_hit_feedback_table(float delta) {
     }
 }
 
+void step_wave_rest(float delta) {
+    if (wave_rest.rest_state > 0) {
+        wave_rest.rest_state -= delta;
+        if (wave_rest.rest_state < 0) {
+            curr_wave += 1;
+            start_wave();
+        }
+    }
+}
+
+void step_overlay_data(float delta) {
+    overlay_data->player_dead = health_table->health_points[0] < 0;
+    if (overlay_data->wave_state > 0) {
+        overlay_data->wave_state -= delta;
+    }
+    else {
+        overlay_data->wave_start = 0;
+        overlay_data->wave_end = 0;
+    }
+}
+
 EMSCRIPTEN_KEEPALIVE
 void step() {
     const float delta = step_time();
@@ -1276,8 +1328,12 @@ void step() {
     step_player(delta);
     step_ai_enemy(delta);
     step_bullets(delta);
-    step_wave_completion();
     step_wave_emitter();
+    step_wave_rest(delta);
+    if (wave_rest.rest_state < 0) {
+        step_wave_completion();
+    }
+    step_overlay_data(delta);
 }
 
 

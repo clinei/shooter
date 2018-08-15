@@ -9,6 +9,22 @@ function find_item_index(table, entity_id) {
     return Module.ccall('find_item_index', 'number', ['number', 'number'], [table.ptr, entity_id]);
 }
 
+function get_overlay_data() {
+    const ptr = Module.ccall('get_overlay_data', 'number');
+
+    const player_dead = Module.HEAP32[(ptr+4*0)>>2];
+    const wave_start  = Module.HEAP32[(ptr+4*1)>>2];
+    const wave_end    = Module.HEAP32[(ptr+4*2)>>2];
+    const wave_state  = Module.HEAP32[(ptr+4*3)>>2];
+
+    return {
+        player_dead,
+        wave_start,
+        wave_end,
+        wave_state,
+        ptr,
+    }
+}
 function get_weapon_states() {
     const ptr = Module.ccall('get_weapon_states', 'number');
 
@@ -252,6 +268,34 @@ async function main() {
         ctx.lineWidth = 2;
         ctx.fillText(score, canvas.width / 2, 50);
         ctx.strokeText(score, canvas.width / 2, 50);
+
+        const overlay_data = get_overlay_data();
+        if (overlay_data.player_dead) {
+            ctx.font = '72px sans-serif';
+            ctx.fillStyle = '#dd0';
+            ctx.strokeStyle = '#111';
+            ctx.textAlign = 'center';
+            ctx.lineWidth = 2;
+            let text = 'YOU DIED';
+            ctx.fillText(text, canvas.width / 2, 160);
+            ctx.strokeText(text, canvas.width / 2, 160);
+        }
+        else if (overlay_data.wave_state > 0.01) {
+            ctx.font = '72px sans-serif';
+            ctx.fillStyle = '#dd0';
+            ctx.strokeStyle = '#111';
+            ctx.textAlign = 'center';
+            ctx.lineWidth = 2;
+            let text = '';
+            if (overlay_data.wave_start > 0) {
+                text = 'STARTING WAVE '+ overlay_data.wave_start;
+            }
+            if (overlay_data.wave_end > 0) {
+                text = 'FINISHED WAVE '+ overlay_data.wave_end;
+            }
+            ctx.fillText(text, canvas.width / 2, 160);
+            ctx.strokeText(text, canvas.width / 2, 160);
+        }
 
         /*
         for (let i = 0; i < weapon_states.curr_max; i += 1) {
