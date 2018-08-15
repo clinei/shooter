@@ -10,8 +10,6 @@
 
 /*  BUGS
 
-* player gets hurt at start
-
 * first enemy doesn't attack
 
 */
@@ -1176,7 +1174,7 @@ void step_collision_resolve(float delta) {
         if (is_enemy && with_player) {
             const table_id_t proximity_attack_id = find_item_index(proximity_attack, entity_id);
             const float proximity_attack_state = proximity_attack->attack_state[proximity_attack_id];
-            if (proximity_attack_state < 0.01) {
+            if (proximity_attack_state < 0) {
                 // a zombie attacks the player
                 // should we knockback the player?
                 add_hit_feedback_item(0, 100);
